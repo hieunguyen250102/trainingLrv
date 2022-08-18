@@ -19,15 +19,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
     <!-- Font Awesome-->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/fontawesome.css')}}" />
+    <!-- <link rel="stylesheet" type="text/css" href="{{asset('assets/css/fontawesome.css')}}" /> -->
     <!-- ico-font-->
     <!-- <link rel="stylesheet" type="text/css" href="{{asset('assets/css/icofont.css')}}" /> -->
     <!-- Themify icon-->
     <!-- <link rel="stylesheet" type="text/css" href="{{asset('assets/css/themify.css')}}" /> -->
     <!-- Flag icon-->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/flag-icon.css')}}" />
+    <!-- <link rel="stylesheet" type="text/css" href="{{asset('assets/css/flag-icon.css')}}" /> -->
     <!-- Feather icon-->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/feather-icon.css')}}" />
+    <!-- <link rel="stylesheet" type="text/css" href="{{asset('assets/css/feather-icon.css')}}" /> -->
     <!-- Plugins css start-->
     <!-- <link rel="stylesheet" type="text/css" href="{{asset('assets/css/animate.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/chartist.css')}}" />
@@ -109,7 +109,7 @@
 <script src="{{asset('assets/js/vector-map/map/jquery-jvectormap-chicago-mill-en.js')}}"></script>
 <script src="{{asset('assets/js/vector-map/map/jquery-jvectormap-in-mill.js')}}"></script>
 <script src="{{asset('assets/js/vector-map/map/jquery-jvectormap-asia-mill.js')}}"></script> -->
-<script src="{{asset('assets/js/dashboard/default.js')}}"></script>
+<!-- <script src="{{asset('assets/js/dashboard/default.js')}}"></script> -->
 <script src="{{asset('assets/js/notify/index.js')}}"></script>
 <!-- <script src="{{asset('assets/js/datepicker/date-picker/datepicker.js')}}"></script>
 <script src="{{asset('assets/js/datepicker/date-picker/datepicker.en.js')}}"></script>
@@ -118,5 +118,6 @@
 <!-- Theme js-->
 <script src="{{asset('assets/js/script.js')}}"></script>
 <script src="{{asset('assets/js/theme-customizer/customizer.js')}}"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </html>

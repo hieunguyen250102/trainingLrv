@@ -80,13 +80,9 @@ class FacultyController extends Controller
     public function update(Request $request, $id)
     {
         $faculty  = Faculty::find($id);
-
-        return response()->json(
-            [
-                'success' => true,
-                'message' => 'Data inserted successfully'
-            ]
-        );
+        $faculty->fill($request->all());
+        $faculty->save();
+        return response()->json($faculty);
     }
 
     /**

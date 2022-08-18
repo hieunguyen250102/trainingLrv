@@ -19,12 +19,6 @@
                     <table class="table table-border-vertical" style="text-align: center;">
                         <thead>
                             <tr>
-                                <th>
-                                    <div class="checkbox checkbox-dark">
-                                        <input id="solidAll" type="checkbox">
-                                        <label for="solid"></label>
-                                    </div>
-                                </th>
                                 <th scope="col">#</th>
                                 <th scope="col">Name faculty</th>
                                 <th scope="col" colspan="2">Options</th>
@@ -32,15 +26,9 @@
                         </thead>
                         <tbody>
                             @foreach($faculties as $faculty)
-                            <tr>
-                                <td>
-                                    <div class="checkbox checkbox-dark">
-                                        <input id="solid" type="checkbox" value="{{$faculty->id}}">
-                                        <label for="solid"></label>
-                                    </div>
-                                </td>
+                            <tr id="id{{$faculty->id}}">
                                 <th scope="row">{{$faculty->id}}</th>
-                                <td>{{$faculty->name}}}</td>
+                                <td>{{$faculty->name}}</td>
                                 <td>
                                     <a onclick="update(<?php echo $faculty->id ?>)" data-bs-toggle="modal" data-bs-target="#edit-bookmark" id="editFaculty" data-id="{{$faculty->id}}">
                                         <button class="btn btn-warning">Edit</button>
@@ -119,10 +107,11 @@
     });
 
     function saveUpdate() {
-        var name = $('#nameFaculty').val()
-        var id = $('#faculty_id').val()
+        var name = $('#nameFaculty').val();
+        var id = $('#faculty_id').val();
+        var url = '/admin/faculties/'
         $.ajax({
-            url: "admin/faculties/" + id,
+            url: "/admin/faculties/" + id,
             type: "PUT",
             data: {
                 id: id,
@@ -130,7 +119,18 @@
             },
             dataType: 'json',
             success: function(data) {
-
+                console.log(data);
+                Swal.fire(
+                    'Good job!',
+                    'You clicked the button!',
+                    'success'
+                )
+                $('#edit-bookmark').removeClass('show');
+                $('#edit-bookmark').css('padding-right', ' ');
+                $('body').removeAttr("style");
+                $('body').removeClass('modal-open');
+                $('#id ' + data.id + ' td:nth-child(0)').html(data.name);
+                $('body').removeAttr('data-bs-padding-right');
             }
         })
     }

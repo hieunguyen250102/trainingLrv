@@ -2,10 +2,10 @@
             <div class="main-header-right row m-0">
                 <div class="main-header-left">
                     <div class="logo-wrapper">
-                        <a href="/admin"><img class="img-fluid" src="{{asset('/images/logo/logo_black.png')}}" alt="" /></a>
+                        <a href="/admin"><img class="img-fluid" src="" alt="" /></a>
                     </div>
                     <div class="dark-logo-wrapper">
-                        <a href="/admin"><img class="img-fluid" src="{{asset('/images/logo/logo_white.png')}}" alt="" /></a>
+                        <a href="/admin"><img class="img-fluid" src="" alt="" /></a>
                     </div>
                     <div class="toggle-sidebar">
                         <i class="status_toggle middle" data-feather="align-center" id="sidebar-toggle">
