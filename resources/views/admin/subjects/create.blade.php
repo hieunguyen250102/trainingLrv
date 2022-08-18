@@ -16,16 +16,16 @@
                     <div class="card-body">
                         {{Form::open([
                             'method' => 'POST', 
-                            'route' => 'faculties.store',
+                            'route' => 'subjects.store',
                             'class' => 'theme-form'
                             ])}}
                         <div class="mb-3">
-                            {{Form::label('exampleInputEmail1', 'Name Faculty', ['class' => 'col-form-label pt-0'])}}
+                            {{Form::label('exampleInputEmail1', 'Name Subject', ['class' => 'col-form-label pt-0'])}}
                             @if ($errors->first('name'))
-                            {!!Form::text('name', '',['class' => 'form-control is-invalid' , 'id' => 'exampleInputEmail1','placeholder' => 'Enter name faculty'])!!}
+                            {!!Form::text('name', '',['class' => 'form-control is-invalid' , 'id' => 'exampleInputEmail1','placeholder' => 'Enter name subject'])!!}
                             <div class="invalid-feedback">{{$errors->first('name')}}</div>
                             @else 
-                            {!!Form::text('name', '', ['class' => 'form-control' , 'id' => 'exampleInputEmail1','placeholder' => 'Enter name faculty'])!!}
+                            {!!Form::text('name', '', ['class' => 'form-control' , 'id' => 'exampleInputEmail1','placeholder' => 'Enter name subject'])!!}
                             @endif
                         </div>
                     </div>
@@ -39,15 +39,4 @@
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<script>
-    // Tag
-    $(document).ready(function() {
-        $(window).keydown(function(event) {
-            if (event.keyCode == 13) {
-                event.preventDefault();
-                return false;
-            }
-        });
-    });
-</script>
 @endsection

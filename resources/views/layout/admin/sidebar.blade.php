@@ -47,24 +47,24 @@
                         <a class="nav-link menu-title" href="javascript:void(0)"><i data-feather="layers"></i><span>Faculties</span></a>
                         <ul class="nav-submenu menu-content" style="display: none">
                             <li>
-                                <a href="{{route('faculties.index')}}" class=""><i class="fa fa-list"></i>List Faculties</a>
+                                <a href="{{route('faculties.index')}}" class=""><i class="fa fa-list"></i>List Faculties</a>    
                             </li>
                             <li>
-                                <a href="" class=""><i class="fa fa-plus-square-o"></i>Create new Faculty</a>
+                                <a href="{{route('faculties.create')}}" class=""><i class="fa fa-plus-square-o"></i>Create new Faculty</a>
                             </li>
                         </ul>
                     <li>
-                    <!-- <li class="dropdown">
-                        <a class="nav-link menu-title" href="javascript:void(0)"><i data-feather="users"></i><span>Students</span></a>
+                    <li class="dropdown">
+                        <a class="nav-link menu-title" href="javascript:void(0)"><i data-feather="book"></i><span>Subjects</span></a>
                         <ul class="nav-submenu menu-content" style="display: none">
                             <li>
-                                <a href="" class=""><i class="fa fa-list"></i>List Students</a>
+                                <a href="{{route('subjects.index')}}" class=""><i class="fa fa-list"></i>List Subjects</a>    
                             </li>
                             <li>
-                                <a href="" class=""><i class="fa fa-plus-square-o"></i>Create new student</a>
+                                <a href="{{route('subjects.create')}}" class=""><i class="fa fa-plus-square-o"></i>Create new subject</a>
                             </li>
                         </ul>
-                    <li> -->
+                    <li>
                         <a href="" class="nav-link menu-title"><i data-feather="users"></i><span>Students</span></a>
                     </li>
                 </ul>

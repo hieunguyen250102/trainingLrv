@@ -1,5 +1,5 @@
 @extends('layout.admin.main')
-@section('title-page', 'List faculties')
+@section('title-page', 'List subjects')
 @section('content')
 <div class="page-body">
     <!-- Container-fluid starts-->
@@ -7,8 +7,8 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>List faculties</h5>
-                    <a href="{{route('faculties.create')}}"><button class="btn btn-primary mt-3">Create</button></a>
+                    <h5>List subjects</h5>
+                    <a href="{{route('subjects.create')}}"><button class="btn btn-primary mt-3">Create</button></a>
                 </div>
                 @if (session()->has('success'))
                 <div class="alert alert-primary w-50 ml-30">
@@ -20,12 +20,25 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Name faculty</th>
+                                <th scope="col">Name subject</th>
                                 <th scope="col" colspan="2">Options</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {!! renderTable($faculties) !!}
+                            @foreach($subjects as $key => $subject)
+                            <tr id="id{{$subject->id}}">
+                                <th scope="row">{{$subject->id}}</th>
+                                <td>{{$subject->name}}</td>
+                                <td>
+                                    <a onclick="update(<?php echo $subject->id ?>)" data-bs-toggle="modal" data-bs-target="#edit-bookmark" id="editsubject" data-id="{{$subject->id}}">
+                                        <button class="btn btn-warning">Edit</button>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{route('subjects.destroy',['subject' => $subject->id])}}" class="btn btn-danger btnDelete">Delete</a>
+                                </td>
+                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                     <form action="" method="POST" id="form-delete">
@@ -34,9 +47,6 @@
                     </form>
                 </div>
             </div>
-        </div>
-        <div class="dataTables_paginate paging_simple_numbers" id="basic-1_paginate">
-            {!!$faculties->links()!!}
         </div>
     </div>
 </div>
@@ -51,14 +61,14 @@
                 {!! Form::open(array('url' => '', 'class' => 'form-bookmark needs-validation')) !!}
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        {!!Form::label('', 'Name Faculty')!!}
+                        {!!Form::label('', 'Name subject')!!}
                         @if ($errors->first('name'))
-                        {!!Form::text('name', '',['class' => 'form-control is-invalid' , 'id' => 'nameFaculty','placeholder' => 'Enter name faculty'])!!}
+                        {!!Form::text('name', '',['class' => 'form-control is-invalid' , 'id' => 'namesubject','placeholder' => 'Enter name subject'])!!}
                         <div class="invalid-feedback">{{$errors->first('name')}}</div>
                         @else
-                        {!!Form::text('name', '', ['class' => 'form-control' , 'id' => 'nameFaculty','placeholder' => 'Enter name faculty'])!!}
+                        {!!Form::text('name', '', ['class' => 'form-control' , 'id' => 'namesubject','placeholder' => 'Enter name subject'])!!}
                         @endif
-                        {!!Form::hidden('faculty_id', '',['id' => 'faculty_id'])!!}
+                        {!!Form::hidden('subject_id', '',['id' => 'subject_id'])!!}
                     </div>
                 </div>
                 {!! Form::button('Save', ['class' => 'btn btn-secondary','id' => 'saveUpdateForm'])!!}
@@ -80,6 +90,8 @@
         }
     });
 
+
+
     $(document).ready(function() {
         $.ajaxSetup({
             headers: {
@@ -90,23 +102,23 @@
 
     function update(id) {
         // var id = $(this).attr('data-id');
-        $.get('faculties/' + id + '/edit', function(data) {
-            $('#nameFaculty').val(data.faculty.name);
-            $('#faculty_id').val(data.faculty.id);
+        $.get('subjects/' + id + '/edit', function(data) {
+            $('#namesubject').val(data.subject.name);
+            $('#subject_id').val(data.subject.id);
         })
     };
 
-    var id = $('#faculty_id').val()
+    var id = $('#subject_id').val()
     $('#saveUpdateForm').on('click', function(id) {
         saveUpdate(id);
     });
 
     function saveUpdate() {
-        var name = $('#nameFaculty').val();
-        var id = $('#faculty_id').val();
-        var url = '/admin/faculties/'
+        var name = $('#namesubject').val();
+        var id = $('#subject_id').val();
+        var url = '/admin/subjects/'
         $.ajax({
-            url: "/admin/faculties/" + id,
+            url: "/admin/subjects/" + id,
             type: "PUT",
             data: {
                 id: id,

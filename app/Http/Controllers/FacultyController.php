@@ -15,7 +15,7 @@ class FacultyController extends Controller
      */
     public function index()
     {
-        $faculties = Faculty::select('id', 'name')->paginate(5);
+        $faculties = Faculty::select('id', 'name')->paginate(0);
         return view('admin.faculties.index', [
             'faculties' => $faculties
         ]);

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SubjectRequest;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 
 class SubjectController extends Controller
@@ -13,7 +15,10 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        //
+        $subjects = Subject::select('id', 'name')->paginate(10);
+        return view('admin.subjects.index', [
+            'subjects' => $subjects
+        ]);
     }
 
     /**
@@ -23,7 +28,7 @@ class SubjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.subjects.create');
     }
 
     /**
@@ -32,9 +37,11 @@ class SubjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SubjectRequest $request)
     {
-        //
+        $subject =Subject::create($request->all());
+        session()->flash('success', 'Create successfully!');
+        return redirect()->route('subjects.index');
     }
 
     /**
@@ -56,7 +63,11 @@ class SubjectController extends Controller
      */
     public function edit($id)
     {
-        //
+        $subject =Subject::find($id);
+        return response()->json([
+            'subject' => $subject,
+            'id' => $subject->id
+        ]);
     }
 
     /**
@@ -68,7 +79,10 @@ class SubjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $subject  =Subject::find($id);
+        $subject->fill($request->all());
+        $subject->save();
+        return response()->json($subject);
     }
 
     /**
@@ -79,6 +93,9 @@ class SubjectController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $subject =Subject::find($id);
+        $subject->delete();
+        session()->flash('success', 'Delete successfully!');
+        return redirect()->route('subjects.index');
     }
 }
