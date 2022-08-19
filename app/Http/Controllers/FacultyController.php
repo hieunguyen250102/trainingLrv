@@ -72,10 +72,11 @@ class FacultyController extends Controller
     public function edit($id)
     {
         $faculty = $this->facultyRepo->find($id);
-        return response()->json([
-            'faculty' => $faculty,
-            'id' => $faculty->id
-        ]);
+        return view('admin.faculties.create', compact('faculty'));
+        // return response()->json([
+        //     'faculty' => $faculty,
+        //     'id' => $faculty->id
+        // ]);
     }
 
     /**
@@ -88,7 +89,9 @@ class FacultyController extends Controller
     public function update(Request $request, $id)
     {
         $faculty = $this->facultyRepo->update($id, $request->all());
-        return response()->json($faculty);
+        session()->flash('success', 'Update successfully!');
+        return redirect()->route('faculties.index');
+        // return response()->json($faculty);
     }
 
     /**

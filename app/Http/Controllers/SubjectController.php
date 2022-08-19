@@ -4,21 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SubjectRequest;
 use App\Models\Subject;
+use App\Repositories\Subjects\SubjectRepositoryInterface;
 use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
+
+    protected $SubjectRepo;
+
+    public function __construct(SubjectRepositoryInterface $SubjectRepo)
+    {
+        $this->SubjectRepo = $SubjectRepo;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
-        $subjects = Subject::select('id', 'name')->paginate(10);
-        return view('admin.subjects.index', [
-            'subjects' => $subjects
-        ]);
+        $subjects = $this->SubjectRepo->getSubject();
+        return view('admin.subjects.index', compact('subjects'));
     }
 
     /**
@@ -28,7 +36,8 @@ class SubjectController extends Controller
      */
     public function create()
     {
-        return view('admin.subjects.create');
+        $subject = new Subject();
+        return view('admin.subjects.create', compact('subject'));
     }
 
     /**
@@ -39,7 +48,7 @@ class SubjectController extends Controller
      */
     public function store(SubjectRequest $request)
     {
-        $subject =Subject::create($request->all());
+        $Subject = $this->SubjectRepo->create($request->all());
         session()->flash('success', 'Create successfully!');
         return redirect()->route('subjects.index');
     }
@@ -52,7 +61,6 @@ class SubjectController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -63,11 +71,12 @@ class SubjectController extends Controller
      */
     public function edit($id)
     {
-        $subject =Subject::find($id);
-        return response()->json([
-            'subject' => $subject,
-            'id' => $subject->id
-        ]);
+        $subject = $this->SubjectRepo->find($id);
+        return view('admin.subjects.create', compact('subject'));
+        // return response()->json([
+        //     'Subject' => $Subject,
+        //     'id' => $Subject->id
+        // ]);
     }
 
     /**
@@ -79,10 +88,10 @@ class SubjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $subject  =Subject::find($id);
-        $subject->fill($request->all());
-        $subject->save();
-        return response()->json($subject);
+        $Subject = $this->SubjectRepo->update($id, $request->all());
+        session()->flash('success', 'Update successfully!');
+        return redirect()->route('subjects.index');
+        // return response()->json($Subject);
     }
 
     /**
@@ -93,8 +102,7 @@ class SubjectController extends Controller
      */
     public function destroy($id)
     {
-        $subject =Subject::find($id);
-        $subject->delete();
+        $this->SubjectRepo->delete($id);
         session()->flash('success', 'Delete successfully!');
         return redirect()->route('subjects.index');
     }

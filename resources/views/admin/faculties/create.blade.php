@@ -12,7 +12,11 @@
                         <h5>Create new faculty</h5>
                     </div>
                     <div class="card-body">
+                        @if($faculty->id)
+                        {{ Form::model($faculty, array('method' => 'PUT', 'route' => array('faculties.update', $faculty->id))) }}
+                        @else
                         {{ Form::model($faculty, ['method' => 'POST', 'route' => 'faculties.store', 'class' => 'theme-form']) }}
+                        @endif
                         <div class="mb-3">
                             {{ Form::label('exampleInputEmail1', 'Name Faculty', ['class' => 'col-form-label pt-0']) }}
                             @if ($errors->first('name'))

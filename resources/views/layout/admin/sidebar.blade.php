@@ -15,7 +15,7 @@
             </li>
             <li>
                 <span>2 year</span>
-                <p>Experince</p>
+                <p>Experience</p>
             </li>
             <li>
                 <span><span class="counter">95.2</span>k</span>
@@ -47,10 +47,10 @@
                         <a class="nav-link menu-title" href="javascript:void(0)"><i data-feather="layers"></i><span>Faculties</span></a>
                         <ul class="nav-submenu menu-content" style="display: none">
                             <li>
-                                <a href="{{route('faculties.index')}}" class=""><i class="fa fa-list"></i>List Faculties</a>    
+                                <a href="{{route('faculties.index')}}" class=""><i class="fa fa-list"></i>List Faculties</a>
                             </li>
                             <li>
-                                <a href="{{route('faculties.create')}}" class=""><i class="fa fa-plus-square-o"></i>Create new Faculty</a>
+                                <a href="{{route('faculties.create')}}" class=""><i class="fa fa-plus"></i>Create new Faculty</a>
                             </li>
                         </ul>
                     <li>
@@ -58,10 +58,10 @@
                         <a class="nav-link menu-title" href="javascript:void(0)"><i data-feather="book"></i><span>Subjects</span></a>
                         <ul class="nav-submenu menu-content" style="display: none">
                             <li>
-                                <a href="{{route('subjects.index')}}" class=""><i class="fa fa-list"></i>List Subjects</a>    
+                                <a href="{{route('subjects.index')}}" class=""><i class="fa fa-list"></i>List Subjects</a>
                             </li>
                             <li>
-                                <a href="{{route('subjects.create')}}" class=""><i class="fa fa-plus-square-o"></i>Create new subject</a>
+                                <a href="{{route('subjects.create')}}" class=""><i class="fa fa-plus"></i>Create new subject</a>
                             </li>
                         </ul>
                     <li>

@@ -1,6 +1,7 @@
 @extends('layout.admin.main')
 @section('title-page', 'List subjects')
 @section('content')
+
 <div class="page-body">
     <!-- Container-fluid starts-->
     <div class="container-fluid">
@@ -25,14 +26,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($subjects as $key => $subject)
+                            @foreach($subjects as $subject)
                             <tr id="id{{$subject->id}}">
                                 <th scope="row">{{$subject->id}}</th>
                                 <td>{{$subject->name}}</td>
                                 <td>
-                                    <a onclick="update(<?php echo $subject->id ?>)" data-bs-toggle="modal" data-bs-target="#edit-bookmark" id="editsubject" data-id="{{$subject->id}}">
-                                        <button class="btn btn-warning">Edit</button>
-                                    </a>
+                                    <a href="{{route('subjects.edit',['subject' => $subject->id])}}" class="btn btn-warning">Edit</a>
                                 </td>
                                 <td>
                                     <a href="{{route('subjects.destroy',['subject' => $subject->id])}}" class="btn btn-danger btnDelete">Delete</a>
@@ -63,22 +62,9 @@
                     <div class="form-group col-md-12">
                         {!!Form::label('', 'Name subject')!!}
                         @if ($errors->first('name'))
-                        {!!
-                        Form::text('name', '',[
-                        'class' => 'form-control is-invalid' ,
-                        'id' => 'namesubject',
-                        'placeholder' => 'Enter name subject'
-                        ])
-                        !!}
+                        {!!Form::text('name', '',['class' => 'form-control is-invalid' ,'id' => 'namesubject','placeholder' => 'Enter name subject'])!!}
                         <div class="invalid-feedback">{{$errors->first('name')}}</div>
-                        @else
-                        {!!
-                        Form::text('name', '', [
-                        'class' => 'form-control',
-                        'id' => 'namesubject',
-                        'placeholder' => 'Enter name subject'
-                        ])
-                        !!}
+                        @else{!! Form::text('name', '', ['class' => 'form-control','id' => 'namesubject','placeholder' => 'Enter name subject']) !!}
                         @endif
                         {!!Form::hidden('subject_id', '',['id' => 'subject_id'])!!}
                     </div>

@@ -1,7 +1,6 @@
 @extends('layout.admin.main')
 @section('title-page', 'Create new category')
 @section('content')
-<!-- <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/thinline.css"> -->
 
 <div class="page-body">
     <!-- Container-fluid starts-->
@@ -10,22 +9,21 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header pb-0">
-                        <h5>Create new faculty</h5>
-                        <!-- <span>Using the <a href="#">card</a> component, you can extend the default collapse behavior to create an accordion.</span> -->
+                        <h5>Create new subject</h5>
                     </div>
                     <div class="card-body">
-                        {{Form::open([
-                            'method' => 'POST', 
-                            'route' => 'subjects.store',
-                            'class' => 'theme-form'
-                            ])}}
+                    @if($subject->id)
+                        {{ Form::model($subject, array('method' => 'PUT', 'route' => array('subjects.update', $subject->id))) }}
+                        @else
+                        {{ Form::model($subject, ['method' => 'POST', 'route' => 'subjects.store', 'class' => 'theme-form']) }}
+                        @endif
                         <div class="mb-3">
                             {{Form::label('exampleInputEmail1', 'Name Subject', ['class' => 'col-form-label pt-0'])}}
                             @if ($errors->first('name'))
-                            {!!Form::text('name', '',['class' => 'form-control is-invalid' , 'id' => 'exampleInputEmail1','placeholder' => 'Enter name subject'])!!}
+                            {!!Form::text('name', $subject->name,['class' => 'form-control is-invalid' , 'id' => 'exampleInputEmail1','placeholder' => 'Enter name subject'])!!}
                             <div class="invalid-feedback">{{$errors->first('name')}}</div>
-                            @else 
-                            {!!Form::text('name', '', ['class' => 'form-control' , 'id' => 'exampleInputEmail1','placeholder' => 'Enter name subject'])!!}
+                            @else
+                            {!!Form::text('name', $subject->name, ['class' => 'form-control' , 'id' => 'exampleInputEmail1','placeholder' => 'Enter name subject'])!!}
                             @endif
                         </div>
                     </div>

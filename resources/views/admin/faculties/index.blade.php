@@ -30,7 +30,7 @@
                                 <th scope="row">{{ $faculty->id }}</th>
                                 <td>{{ $faculty->name }}</td>
                                 <td>
-                                    <a onclick="update(<?php echo $faculty->id ?>)" data-bs-toggle="modal" data-bs-target="#edit-bookmark" id="editFaculty" data-id="{{ $faculty->id }}">
+                                    <a href="{{ route('faculties.edit', ['faculty' => $faculty->id]) }}">
                                         <button class="btn btn-warning">Edit</button>
                                     </a>
                                 </td>
