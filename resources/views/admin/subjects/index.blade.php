@@ -63,10 +63,22 @@
                     <div class="form-group col-md-12">
                         {!!Form::label('', 'Name subject')!!}
                         @if ($errors->first('name'))
-                        {!!Form::text('name', '',['class' => 'form-control is-invalid' , 'id' => 'namesubject','placeholder' => 'Enter name subject'])!!}
+                        {!!
+                        Form::text('name', '',[
+                        'class' => 'form-control is-invalid' ,
+                        'id' => 'namesubject',
+                        'placeholder' => 'Enter name subject'
+                        ])
+                        !!}
                         <div class="invalid-feedback">{{$errors->first('name')}}</div>
                         @else
-                        {!!Form::text('name', '', ['class' => 'form-control' , 'id' => 'namesubject','placeholder' => 'Enter name subject'])!!}
+                        {!!
+                        Form::text('name', '', [
+                        'class' => 'form-control',
+                        'id' => 'namesubject',
+                        'placeholder' => 'Enter name subject'
+                        ])
+                        !!}
                         @endif
                         {!!Form::hidden('subject_id', '',['id' => 'subject_id'])!!}
                     </div>

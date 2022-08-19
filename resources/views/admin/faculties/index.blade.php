@@ -48,7 +48,7 @@
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                {!! Form::open(array('url' => '', 'class' => 'form-bookmark needs-validation')) !!}
+                {!! Form::model(array('url' => '', 'class' => 'form-bookmark needs-validation')) !!}
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         {!!Form::label('', 'Name Faculty')!!}
