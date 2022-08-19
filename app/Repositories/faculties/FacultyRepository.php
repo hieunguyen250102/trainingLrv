@@ -14,6 +14,6 @@ class FacultyRepository extends BaseRepository implements FacultyRepositoryInter
 
     public function getFaculty()
     {
-        return $this->model->select('id', 'name')->latest('updated_at')->paginate(0);
+        return $this->model->select('id', 'name')->orderBy('updated_at', 'DESC')->paginate(0);
     }
 }

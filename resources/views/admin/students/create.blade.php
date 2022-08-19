@@ -9,21 +9,17 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header pb-0">
-                        <h5>Create new faculty</h5>
+                        <h5>Create new student</h5>
                     </div>
                     <div class="card-body">
-                        @if($faculty->id)
-                        {{ Form::model($faculty, array('method' => 'PUT', 'route' => array('faculties.update', $faculty->id))) }} 
-                        @else
-                        {{ Form::model($faculty, ['method' => 'POST', 'route' => 'faculties.store', 'class' => 'theme-form']) }}
-                        @endif
+                        {{ Form::model($student, ['enctype' => 'multipart/form-data', 'method' => 'POST', 'route' => 'students.store', 'class' => 'theme-form']) }}
                         <div class="mb-3">
-                            {{ Form::label('exampleInputEmail1', 'Name Faculty', ['class' => 'col-form-label pt-0']) }}
+                            {{ Form::label('exampleInputEmail1', 'Name student', ['class' => 'col-form-label pt-0']) }}
                             @if ($errors->first('name'))
-                            {!!Form::text('name', $faculty->name, ['class' => 'form-control is-invalid' , 'id' => 'exampleInputEmail1','placeholder' => 'Enter name faculty'])!!}
+                            {!!Form::text('name', $student->name, ['class' => 'form-control is-invalid' , 'id' => 'exampleInputEmail1','placeholder' => 'Enter name student'])!!}
                             <div class="invalid-feedback">{{$errors->first('name')}}</div>
                             @else
-                            {{ Form::text('name', $faculty->name, array('class'=>'form-control','id' => 'exampleInputEmail1','placeholder' => 'Enter name faculty')) }}
+                            {{ Form::text('name', $student->name, array('class'=>'form-control','id' => 'exampleInputEmail1','placeholder' => 'Enter name student')) }}
                             @endif
                         </div>
                     </div>

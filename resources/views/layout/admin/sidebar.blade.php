@@ -65,8 +65,16 @@
                             </li>
                         </ul>
                     <li>
-                        <a href="" class="nav-link menu-title"><i data-feather="users"></i><span>Students</span></a>
-                    </li>
+                    <li class="dropdown">
+                        <a class="nav-link menu-title" href="javascript:void(0)"><i data-feather="users"></i><span>Subjects</span></a>
+                        <ul class="nav-submenu menu-content" style="display: none">
+                            <li>
+                                <a href="{{route('students.index')}}" class=""><i class="fa fa-list"></i>List Students</a>
+                            </li>
+                            <li>
+                                <a href="{{route('students.create')}}" class=""><i class="fa fa-plus"></i>Create new subject</a>
+                            </li>
+                        </ul>
                 </ul>
             </div>
         </div>

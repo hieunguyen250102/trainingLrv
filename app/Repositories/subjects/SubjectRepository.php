@@ -14,6 +14,6 @@ class SubjectRepository extends BaseRepository implements SubjectRepositoryInter
 
     public function getSubject()
     {
-        return $this->model->select('id', 'name')->latest()->paginate(0);
+        return $this->model->select('id', 'name')->orderBy('updated_at', 'DESC')->paginate(0);
     }
 }
