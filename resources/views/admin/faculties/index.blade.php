@@ -25,7 +25,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {!! renderTable($faculties) !!}
+                            @foreach ($faculties as $faculty)
+                            <tr id="id{{ $faculty->id }}">
+                                <th scope="row">{{ $faculty->id }}</th>
+                                <td>{{ $faculty->name }}</td>
+                                <td>
+                                    <a onclick="update(<?php echo $faculty->id ?>)" data-bs-toggle="modal" data-bs-target="#edit-bookmark" id="editFaculty" data-id="{{ $faculty->id }}">
+                                        <button class="btn btn-warning">Edit</button>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ route('faculties.destroy', ['faculty' => $faculty->id]) }}" class="btn btn-danger btnDelete">Delete</a>
+                                </td>
+                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                     <form action="" method="POST" id="form-delete">
@@ -53,10 +66,10 @@
                     <div class="form-group col-md-12">
                         {!!Form::label('', 'Name Faculty')!!}
                         @if ($errors->first('name'))
-                        {!!Form::text('name', '',['class' => 'form-control is-invalid' , 'id' => 'nameFaculty','placeholder' => 'Enter name faculty'])!!}
+                        {!!Form::text('name', '', ['class' => 'form-control is-invalid', 'id' => 'nameFaculty'])!!}
                         <div class="invalid-feedback">{{$errors->first('name')}}</div>
                         @else
-                        {!!Form::text('name', '', ['class' => 'form-control' , 'id' => 'nameFaculty','placeholder' => 'Enter name faculty'])!!}
+                        {!!Form::text('name', '', ['class' => 'form-control' , 'id' => 'nameFaculty'])!!}
                         @endif
                         {!!Form::hidden('faculty_id', '',['id' => 'faculty_id'])!!}
                     </div>

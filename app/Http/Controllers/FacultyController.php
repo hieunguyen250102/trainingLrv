@@ -4,18 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FacultyRequest;
 use App\Models\Faculty;
+use App\Repositories\Faculties\FacultyRepositoryInterface;
 use Illuminate\Http\Request;
 
 class FacultyController extends Controller
 {
+
+    protected $facultyRepo;
+
+    public function __construct(FacultyRepositoryInterface $facultyRepo)
+    {
+        $this->facultyRepo = $facultyRepo;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
-        $faculties = Faculty::latest()->select('id', 'name')->paginate(0);
+        $faculties = $this->facultyRepo->getFaculty();
         return view('admin.faculties.index', compact('faculties'));
     }
 
@@ -26,7 +36,8 @@ class FacultyController extends Controller
      */
     public function create()
     {
-        return view('admin.faculties.create');
+        $faculty = new Faculty();
+        return view('admin.faculties.create', compact('faculty'));
     }
 
     /**
@@ -37,7 +48,7 @@ class FacultyController extends Controller
      */
     public function store(FacultyRequest $request)
     {
-        $faculty = Faculty::create($request->all());
+        $faculty = $this->facultyRepo->create($request->all());
         session()->flash('success', 'Create successfully!');
         return redirect()->route('faculties.index');
     }
@@ -50,7 +61,6 @@ class FacultyController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -61,7 +71,7 @@ class FacultyController extends Controller
      */
     public function edit($id)
     {
-        $faculty = Faculty::find($id);
+        $faculty = $this->facultyRepo->find($id);
         return response()->json([
             'faculty' => $faculty,
             'id' => $faculty->id
@@ -77,9 +87,7 @@ class FacultyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $faculty  = Faculty::find($id);
-        $faculty->fill($request->all());
-        $faculty->save();
+        $faculty = $this->facultyRepo->update($id, $request->all());
         return response()->json($faculty);
     }
 
@@ -91,8 +99,7 @@ class FacultyController extends Controller
      */
     public function destroy($id)
     {
-        $faculty = Faculty::find($id);
-        $faculty->delete();
+        $this->facultyRepo->delete($id);
         session()->flash('success', 'Delete successfully!');
         return redirect()->route('faculties.index');
     }
