@@ -37,7 +37,7 @@ class SubjectController extends Controller
     public function create()
     {
         $subject = new Subject();
-        return view('admin.subjects.create', compact('subject'));
+        return view('admin.subjects.form', compact('subject'));
     }
 
     /**

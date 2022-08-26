@@ -3,6 +3,7 @@
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,24 +18,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('client.index');
+    return view('home');
 });
 
-Route::prefix('/admin')->group(function () {
-    
-    Route::get('/', function ()
-    {
-        return view('admin.index');
-    });
-
+Route::middleware('role:teacher')->group(function () {
     Route::resource('students', StudentController::class);
     Route::resource('subjects', SubjectController::class);
     Route::resource('faculties', FacultyController::class);
 });
 
-Auth::routes();
+Route::middleware('permission:view')->group(function () {
+    Route::resource('subjects', SubjectController::class)->only('index');
+    Route::resource('faculties', FacultyController::class)->only('index');
+});
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Auth::routes();
+
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 

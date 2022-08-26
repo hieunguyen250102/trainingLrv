@@ -1,4 +1,4 @@
-@extends('layout.admin.main')
+@extends('layouts.admin.main')
 @section('title-page', 'List faculties')
 @section('content')
 <div class="page-body">
@@ -8,7 +8,9 @@
             <div class="card">
                 <div class="card-header">
                     <h5>List faculties</h5>
+                    @can('create')
                     <a href="{{route('faculties.create')}}"><button class="btn btn-primary mt-3">Create</button></a>
+                    @endcan
                 </div>
                 @if (session()->has('success'))
                 <div class="alert alert-primary w-50 ml-30">
@@ -21,7 +23,9 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Name faculty</th>
+                                @can('create')
                                 <th scope="col" colspan="2">Options</th>
+                                @endcan
                             </tr>
                         </thead>
                         <tbody>
@@ -29,6 +33,7 @@
                             <tr id="id{{ $faculty->id }}">
                                 <th scope="row">{{ $faculty->id }}</th>
                                 <td>{{ $faculty->name }}</td>
+                                @can('create')
                                 <td>
                                     <a href="{{ route('faculties.edit', ['faculty' => $faculty->id]) }}">
                                         <button class="btn btn-warning">Edit</button>
@@ -37,6 +42,7 @@
                                 <td>
                                     <a href="{{ route('faculties.destroy', ['faculty' => $faculty->id]) }}" class="btn btn-danger btnDelete">Delete</a>
                                 </td>
+                                @endcan
                             </tr>
                             @endforeach
                         </tbody>

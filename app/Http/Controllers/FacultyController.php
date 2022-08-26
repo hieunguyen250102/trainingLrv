@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FacultyRequest;
 use App\Models\Faculty;
+use App\Models\User;
 use App\Repositories\Faculties\FacultyRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasRoles;
 
 class FacultyController extends Controller
 {
@@ -25,6 +30,9 @@ class FacultyController extends Controller
 
     public function index()
     {
+        $role = Role::findById(2);
+        $permission = Permission::findById(2);
+        $role->givePermissionTo($permission);
         $faculties = $this->facultyRepo->getFaculty();
         return view('admin.faculties.index', compact('faculties'));
     }
@@ -37,7 +45,7 @@ class FacultyController extends Controller
     public function create()
     {
         $faculty = new Faculty();
-        return view('admin.faculties.create', compact('faculty'));
+        return view('admin.faculties.form', compact('faculty'));
     }
 
     /**
@@ -72,7 +80,7 @@ class FacultyController extends Controller
     public function edit($id)
     {
         $faculty = $this->facultyRepo->find($id);
-        return view('admin.faculties.create', compact('faculty'));
+        return view('admin.faculties.form', compact('faculty'));
         // return response()->json([
         //     'faculty' => $faculty,
         //     'id' => $faculty->id
@@ -86,7 +94,7 @@ class FacultyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(FacultyRequest $request, $id)
     {
         $faculty = $this->facultyRepo->update($id, $request->all());
         session()->flash('success', 'Update successfully!');

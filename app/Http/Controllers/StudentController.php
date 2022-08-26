@@ -26,7 +26,7 @@ class StudentController extends Controller
     public function create()
     {
         $student = new Student();
-        return view('admin.students.create', compact('student'));
+        return view('admin.students.form', compact('student'));
     }
 
     /**
