@@ -36,10 +36,10 @@
                                 <td>{{$subject->name}}</td>
                                 @can('create')
                                 <td>
-                                    <a href="{{route('subjects.edit',['subject' => $subject->id])}}" class="btn btn-warning">Edit</a>
+                                    <a href="{{route('subjects.edit',['subject' => $subject->id])}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
                                 </td>
                                 <td>
-                                    <a href="{{route('subjects.destroy',['subject' => $subject->id])}}" class="btn btn-danger btnDelete">Delete</a>
+                                    <a href="{{route('subjects.destroy',['subject' => $subject->id])}}" class="btn btn-danger btnDelete"><i class="fa-solid fa-trash"></i></a>
                                 </td>
                                 @endcan
                             </tr>

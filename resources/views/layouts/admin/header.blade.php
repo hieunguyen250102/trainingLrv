@@ -156,9 +156,9 @@
                 <li class="onhover-dropdown p-0">
                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                 </li>
-                <li class="onhover-dropdown p-0">
+                <!-- <li class="onhover-dropdown p-0">
                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                </li>
+                </li> -->
                 @else
                 <li class="onhover-dropdown p-0">
                     <a class="btn btn-primary-light" href="{{ route('logout') }}" onclick="event.preventDefault();

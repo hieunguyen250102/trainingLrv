@@ -56,34 +56,33 @@
             <div class="row">
                 <!-- user profile header start-->
                 <div class="col-sm-12">
-                    <div class="card profile-header bg-size" style="background-image: url(https://laravel.pixelstrap.com/viho/assets/images/user-profile/bg-profile.jpg); background-size: cover; background-position: center center; display: block;">
-                        <img class="img-fluid bg-img-cover" src="https://laravel.pixelstrap.com/viho/assets/images/user-profile/bg-profile.jpg" alt="" style="display: none;">
-                        <div class="profile-img-wrrap bg-size" style="background-image: url(https://laravel.pixelstrap.com/viho/assets/images/user-profile/bg-profile.jpg); background-size: cover; background-position: center center; display: block;"><img class="img-fluid bg-img-cover" src="https://laravel.pixelstrap.com/viho/assets/images/user-profile/bg-profile.jpg" alt="" style="display: none;"></div>
+                    <div class="card profile-header bg-size" style="background-image: url('https://thumbs.dreamstime.com/b/female-hands-typing-laptop-student-workspace-blue-pastel-background-supplies-banner-copy-space-182572747.jpg'); background-size: cover; background-position: center center; display: block;">
+                        <img class="img-fluid bg-img-cover" src="https://thumbs.dreamstime.com/b/female-hands-typing-laptop-student-workspace-blue-pastel-background-supplies-banner-copy-space-182572747.jpg" alt="" style="display: none;">
+                        <div class="profile-img-wrrap bg-size" style="background-image: url('https://thumbs.dreamstime.com/b/female-hands-typing-laptop-student-workspace-blue-pastel-background-supplies-banner-copy-space-182572747.jpg'); background-size: cover; background-position: center center; display: block;"><img class="img-fluid bg-img-cover" src="https://thumbs.dreamstime.com/b/female-hands-typing-laptop-student-workspace-blue-pastel-background-supplies-banner-copy-space-182572747.jpg" alt="" style="display: none;"></div>
                         <div class="userpro-box">
                             <div class="img-wrraper">
                                 <div class="avatar"><img class="img-fluid" alt="" src="{{asset('img/profiles/avatar-11.jpg')}}"></div>
-                                <a class="icon-wrapper" href="#"><i class="icofont icofont-pencil-alt-5"></i></a>
+                                <a class="icon-wrapper" href="#"><i class="icofont-pencil-alt-1"></i></a>
                             </div>
                             <div class="user-designation">
                                 <div class="title">
                                     <a target="_blank" href="">
-                                        <h4>Emay Walter</h4>
-                                        <h6>designer</h6>
+                                        <h4>{{Auth::user()->name}}</h4>
                                     </a>
                                 </div>
                                 <div class="social-media">
                                     <ul class="user-list-social">
                                         <li>
-                                            <a href="#"><i class="fa fa-facebook"></i></a>
+                                            <a href="#"><i class="fa-brands fa-facebook"></i></a>
                                         </li>
                                         <li>
-                                            <a href="#"><i class="fa fa-google-plus"></i></a>
+                                            <a href="#"><i class="fa-brands fa-google-plus"></i></a>
                                         </li>
                                         <li>
-                                            <a href="#"><i class="fa fa-twitter"></i></a>
+                                            <a href="#"><i class="fa-brands fa-twitter"></i></a>
                                         </li>
                                         <li>
-                                            <a href="#"><i class="fa fa-instagram"></i></a>
+                                            <a href="#"><i class="fa-brands fa-instagram"></i></a>
                                         </li>
                                         <li>
                                             <a href="#"><i class="fa fa-rss"></i></a>
@@ -582,7 +581,7 @@
 @else
 <div class="page-body">
     <div class="container-fluid">
-        <div class="col-lg-12 text-center mb-3">
+        <div class="col-lg-9 text-center mb-3">
             <h1 class="mt-5">Manage Students System</h1>
             <p class="lead">Nguyen Trung Hieu</p>
             <img src="{{asset('img/bgtest.png')}}" width="130px;" />

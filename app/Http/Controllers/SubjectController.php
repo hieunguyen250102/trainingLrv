@@ -72,7 +72,7 @@ class SubjectController extends Controller
     public function edit($id)
     {
         $subject = $this->SubjectRepo->find($id);
-        return view('admin.subjects.create', compact('subject'));
+        return view('admin.subjects.form', compact('subject'));
         // return response()->json([
         //     'Subject' => $Subject,
         //     'id' => $Subject->id
@@ -86,7 +86,7 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(SubjectRequest $request, $id)
     {
         $Subject = $this->SubjectRepo->update($id, $request->all());
         session()->flash('success', 'Update successfully!');

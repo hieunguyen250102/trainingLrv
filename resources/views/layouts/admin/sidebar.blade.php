@@ -79,11 +79,11 @@
                                 <a href="{{route('students.index')}}" class=""><i class="fa fa-list"></i>List Students</a>
                             </li>
                             <li>
-                                <a href="{{route('students.create')}}" class=""><i class="fa fa-plus"></i>Create new subject</a>
+                                <a href="{{route('students.create')}}" class=""><i class="fa fa-plus"></i>Create new student</a>
                             </li>
                         </ul>
-                        @endif
                     </li>
+                    @endif
                 </ul>
             </div>
         </div>

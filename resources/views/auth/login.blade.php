@@ -1,5 +1,5 @@
 @extends('layouts.admin.main')
-
+@section('title-page','Login')
 @section('content')
 <div class="page-body">
     <!-- Container-fluid starts-->

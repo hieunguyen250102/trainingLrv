@@ -12,7 +12,7 @@
                     </div>
                     <div class="card-body">
                         @if($faculty->id)
-                        {{ Form::model($faculty, array('method' => 'PUT', 'route' => array('faculties.update', $faculty->id))) }} 
+                        {{ Form::model($faculty, array('method' => 'PUT', 'route' => array('faculties.update', $faculty->id))) }}
                         @else
                         {{ Form::model($faculty, ['method' => 'POST', 'route' => 'faculties.store', 'class' => 'theme-form']) }}
                         @endif
@@ -28,8 +28,15 @@
                     </div>
                     <div class="card-footer">
                         {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
+                        {{ Form::close() }}
+                        @if($faculty->id)
+                        <a href="{{route('faculties.destroy',$faculty->id)}}" class="btn btn-danger btnDelete">Delete</a>
+                        @endif
+                        <form action="" method="POST" id="form-delete">
+                            {{ method_field('DELETE') }}
+                            {!! csrf_field() !!}
+                        </form>
                     </div>
-                    {{ Form::close() }}
                 </div>
             </div>
         </div>
@@ -37,14 +44,13 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
-    // Tag
-    $(document).ready(function() {
-        $(window).keydown(function(event) {
-            if (event.keyCode == 13) {
-                event.preventDefault();
-                return false;
-            }
-        });
+    $('.btnDelete').click(function(e) {
+        e.preventDefault();
+        var href = $(this).attr('href');
+        $('#form-delete').attr('action', href);
+        if (confirm('Are you sure?')) {
+            $('#form-delete').submit();
+        }
     });
 </script>
 @endsection

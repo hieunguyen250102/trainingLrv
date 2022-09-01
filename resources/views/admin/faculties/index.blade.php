@@ -36,11 +36,11 @@
                                 @can('create')
                                 <td>
                                     <a href="{{ route('faculties.edit', ['faculty' => $faculty->id]) }}">
-                                        <button class="btn btn-warning">Edit</button>
+                                        <button class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i>s</button>
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{{ route('faculties.destroy', ['faculty' => $faculty->id]) }}" class="btn btn-danger btnDelete">Delete</a>
+                                    <a href="{{ route('faculties.destroy', ['faculty' => $faculty->id]) }}" class="btn btn-danger btnDelete"><i class="fa-solid fa-trash"></i></a>
                                 </td>
                                 @endcan
                             </tr>

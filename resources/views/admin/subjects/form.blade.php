@@ -12,7 +12,7 @@
                         <h5>Create new subject</h5>
                     </div>
                     <div class="card-body">
-                    @if($subject->id)
+                        @if($subject->id)
                         {{ Form::model($subject, array('method' => 'PUT', 'route' => array('subjects.update', $subject->id))) }}
                         @else
                         {{ Form::model($subject, ['method' => 'POST', 'route' => 'subjects.store', 'class' => 'theme-form']) }}
@@ -29,12 +29,29 @@
                     </div>
                     <div class="card-footer">
                         {!! Form::submit('Submit', ['class' => 'btn btn-primary'])!!}
+                        {{ Form::close() }}
+                        @if($subject->id)
+                        <a href="{{route('subjects.destroy',$subject->id)}}" class="btn btn-danger btnDelete">Delete</a>
+                        @endif
+                        <form action="" method="POST" id="form-delete">
+                            {{ method_field('DELETE') }}
+                            {!! csrf_field() !!}
+                        </form>
                     </div>
-                    {{ Form::close() }}
                 </div>
             </div>
         </div>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script>
+    $('.btnDelete').click(function(e) {
+        e.preventDefault();
+        var href = $(this).attr('href');
+        $('#form-delete').attr('action', href);
+        if (confirm('Are you sure?')) {
+            $('#form-delete').submit();
+        }
+    });
+</script>
 @endsection
