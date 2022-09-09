@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SubjectRequest;
 use App\Models\Subject;
+use App\Models\User;
 use App\Repositories\Subjects\SubjectRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class SubjectController extends Controller
 {
@@ -25,8 +28,10 @@ class SubjectController extends Controller
 
     public function index()
     {
-        $subjects = $this->SubjectRepo->getSubject();
-        return view('admin.subjects.index', compact('subjects'));
+        $subjects = Subject::with('users')->get();
+        $user = User::find(Auth::id());
+        $results = $user->subjects;
+        return view('admin.subjects.index', compact('subjects', 'results'));
     }
 
     /**
@@ -61,6 +66,8 @@ class SubjectController extends Controller
      */
     public function show($id)
     {
+        $subject = Subject::find($id);
+        dd($subject->users()->count());
     }
 
     /**
@@ -102,8 +109,24 @@ class SubjectController extends Controller
      */
     public function destroy($id)
     {
+        $subject = $this->SubjectRepo->find($id);
+        if ($subject->students()->count('*')) {
+            return response()->json(['error' => 'Unsuccessful'], 404);
+        }
         $this->SubjectRepo->delete($id);
-        session()->flash('success', 'Delete successfully!');
-        return redirect()->route('subjects.index');
+        return response()->json(['subject' => $subject], 200);
+    }
+
+    public function registerSubject(Request $request)
+    {
+        $user = User::find(Auth::id());
+        $listSubjects = array();
+        foreach ($request->data as $id) {
+            $subject = Subject::find($id);
+            $user->subjects()->attach(Auth::id(), ['subject_id' => $id]);
+            $listSubjects[] = $subject;
+        }
+        
+        return response()->json(['listSubjects' => $listSubjects]);
     }
 }

@@ -20,19 +20,19 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
     <!-- Font Awesome-->
     <!-- <link rel="stylesheet" type="text/css" href="{{asset('assets/css/fontawesome.css')}}" />
-    <!-- ico-font-->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/icofont.css')}}" />
+     ico-font-->
+    <!-- <link rel="stylesheet" type="text/css" href="{{asset('assets/css/icofont.css')}}" /> -->
     <!-- Themify icon-->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/themify.css')}}" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="{{asset('assets/css/themify.css')}}" /> --> -->
     <!-- Flag icon-->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/flag-icon.css')}}" />
+    <!-- <link rel="stylesheet" type="text/css" href="{{asset('assets/css/flag-icon.css')}}" /> -->
     <!-- Feather icon-->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/icofont/icofont.css')}}" />
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/feather-icon.css')}}" />
+    <!-- <link rel="stylesheet" type="text/css" href="{{asset('assets/css/feather-icon.css')}}" /> -->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/bootstrap.css')}}" />
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/style.css')}}" />
-    <link id="color" rel="stylesheet" href="{{asset('assets/css/color-1.css')}}" media="screen" />
+    <!-- <link id="color" rel="stylesheet" href="{{asset('assets/css/color-1.css')}}" media="screen" /> -->
     <!-- Responsive css-->
     <!-- <link rel="stylesheet" type="text/css" href="{{asset('assets/css/responsive.css')}}" /> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">

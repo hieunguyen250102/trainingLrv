@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StudentRequest;
+use App\Mail\AlertMail;
 use App\Mail\RegisterMail;
 use App\Models\Faculty;
 use App\Models\Student;
+use App\Models\Subject;
 use App\Models\User;
 use App\Repositories\Students\StudentRepositoryInterface;
 use App\Repositories\Faculties\FacultyRepositoryInterface;
@@ -13,6 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+use Laravel\Ui\Presets\React;
 use Spatie\Permission\Contracts\Role;
 
 class StudentController extends Controller
@@ -31,12 +35,14 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $student = new Student();
-        $students = $this->studentRepo->getStudent();
+        $subject = new Subject();
+        // $students = $this->studentRepo->search($request->all());
+        $students = User::where('id', '!=', 1)->with('subjects')->get();
         $faculties = Faculty::pluck('name', 'id');
-        return view('admin.students.index', compact('students', 'faculties', 'student'));
+        return view('admin.students.index', compact('students', 'faculties', 'student', 'subject'));
     }
 
     /**
@@ -59,7 +65,6 @@ class StudentController extends Controller
      */
     public function store(StudentRequest $request)
     {
-        // dd($request->all());
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -80,7 +85,7 @@ class StudentController extends Controller
         $student->save();
 
         $mailable = new RegisterMail($user);
-        Mail::to($request->email)->send($mailable);
+        Mail::to($request->email)->queue($mailable);
 
         session()->flash('success', 'Create successfully!');
         return redirect()->route('students.index');
@@ -94,7 +99,6 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -138,5 +142,51 @@ class StudentController extends Controller
         return response()->json(['student' => $student]);
         // session()->flash('success', 'Delete successfully!');
         // return redirect()->route('students.index');
+    }
+
+    public function updateAvatar(Request $request)
+    {
+        // dd($request->all());
+        $user = User::find($request->id);
+        if ($request->data) {
+            $destination_path = 'public/img/profiles';
+            $image = $request->data;
+            $image_name = $image->getClientOriginalName();
+            $path = $request->data->storeAs($destination_path, $image_name);
+        }
+        $user->avatar = $image_name;
+        $user->save();
+
+        return response()->json($user);
+    }
+    public function alertSubject(Request $request)
+    {
+        $subs = Subject::all();
+        // $subjects = $;
+        $students = Student::all();
+        foreach ($request->listIds as $id) {
+            $listIds[] = $id;
+        }
+        foreach ($listIds as $value) {
+            $listSubject = [];
+            $user = User::find($value);
+            $subject_point = $user->subjects;
+            if ($subject_point->count() == 0) {
+                $listSubject = $subs;
+            } else {
+                foreach ($subs as $sub) {
+                    for ($i = 0; $i < $subject_point->count(); $i++) {
+                        if ($sub->id == $subject_point[$i]->id) {
+                            break;
+                        } elseif ($i == $subject_point->count() - 1) {
+                            $listSubject[] =  $sub;
+                        }
+                    }
+                }
+            }
+            $mailable = new AlertMail($listSubject);
+            Mail::to($user->email)->queue($mailable);
+        }
+        return redirect()->route('students.index');
     }
 }

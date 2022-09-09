@@ -7,9 +7,22 @@
     <div class="container-fluid">
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header">
-                    <h5>List students</h5>
-                    <a href="{{route('students.create')}}"><button class="btn btn-primary mt-3">Create</button></a>
+                <div class="card-header pb-0">
+                    <h5>List student</h5>
+                    <form class="row theme-form mt-3" action="{{route('students.index')}}" method="GET">
+                        <div class="col-xxl-4 mb-3 d-flex">
+                            <label class="col-form-label pe-2" for="inputInlineUsername">From</label>
+                            <input class="form-control" id="inputInlineUsername" type="number" name="age_from" placeholder="From" autocomplete="off">
+                        </div>
+                        <div class="col-xxl-4 mb-3 d-flex">
+                            <label class="col-form-label pe-2" for="inputInlinePassword">To</label>
+                            <input class="form-control" id="inputInlinePassword" type="number" name="age_to" placeholder="To" autocomplete="off">
+                        </div>
+                        <div class="col-xxl-4 mb-3 d-flex">
+                            <button class="btn btn-primary">Search</button>
+                        </div>
+                    </form>
+                    <a href="{{route('students.create')}}"><button class="btn btn-primary mt-3 mb-3">Create</button></a>
                 </div>
                 @if (session()->has('success'))
                 <div class="alert alert-primary w-50 ml-30">
@@ -24,10 +37,10 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Avatar</th>
-                                <th scope="col">Gender</th>
+                                <th scope="col">Mark Average</th>
                                 <th scope="col">Status</th>
-                                <th scope="col">Faculty</th>
-                                <th scope="col" colspan="2">Options</th>
+                                <th scope="col">Options</th>
+                                <th scope="col" class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input id="checkAll" type="checkbox"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -36,20 +49,28 @@
                                 <th scope="row">{{$student->id}}</th>
                                 <td>{{$student->name}}</td>
                                 <td>{{$student->email}}</td>
-                                <td>{{$student->avatar}}</td>
-                                @if($student->gender === 0)
-                                <td><i class="fa-solid fa-mars"></i></td>
+                                <td><img width="100px" src="{{$student->student->avatar}}"></td>
+                                @if($student->subjects->count() == $subject->count())
+                                <td>{{$student->subjects->avg('pivot.mark')}}</td>
                                 @else
-                                <td><i class="fa-solid fa-venus"></i></td>
+                                <td>Khong có đâu</td>
                                 @endif
-                                <td>{{$student->status}}</td>
-                                <td>{{$student->faculty->name}}</td>
+                                @if($student->subjects->count() !== $subject->count())
+                                <td><button class="btn btn-danger btn-xs"><i class="fa-solid fa-bell"></i></button></td>
+                                @else
+                                <td><button class="btn btn-primary btn-xs"><i class="fa-solid fa-check"></i></button></td>
+                                @endif
                                 <td>
-                                    <a data-id="{{$student->id}}" data-bs-target="#edit-bookmark" data-bs-toggle="modal" class="btn btn-warning btnModal"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    <button class="btn btn-warning btn-xs btnModal" data-id="{{$student->id}}" data-bs-target="#edit-bookmark" data-bs-toggle="modal"><i class="fa-solid fa-pen-to-square"></i></button>
+                                    <button class="btn btn-danger btn-xs btnDelete" data-id="{{$student->id}}" id="deleteStudent"><i class="fa-solid fa-trash"></i></button>
+                                    <a href="" class="btn btn-primary btn-xs"><i class="fa-solid fa-eye"></i></a>
                                 </td>
-                                <td>
-                                    <a data-id="{{$student->id}}" id="deleteStudent" class="btn btn-danger btnDelete"><i class="fa-solid fa-trash"></i></a>
-                                </td>
+                                @if($student->subjects->count() !== $subject->count())
+                                {{ Form::model($student, ['route' => ['alert-subject'], 'method' => 'get'])}}
+                                <td><input type="checkbox" name="listIds[]" value="{{$student->id}}"></td>
+                                @else
+                                <td><span class="title">Done</span></td>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>
@@ -57,6 +78,8 @@
                 </div>
             </div>
         </div>
+        <button type="submit" onclick="return confirm('Do you want send to student?')" class="btn btn-primary float-end">Send<i class="fas fa-paper-plane"></i></button>
+        {{ Form::close()}}
     </div>
 </div>
 <div class="modal fade modal-bookmark" id="edit-bookmark" tabindex="-1" style="display: none;" aria-hidden="true">
@@ -165,9 +188,6 @@
         </div>
     </div>
 </div>
-</div>
-</div>
-</div>
 @section('js')
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
@@ -199,7 +219,6 @@
             }
         })
     });
-
 
     $('#saveUpdateForm').on('click', function(event) {
         event.preventDefault();
@@ -274,7 +293,11 @@
                     $('#id' + data.student.id).remove();
                 }
             });
-        } 
+        }
+    });
+
+    $("#checkAll").click(function() {
+        $('input:checkbox').not(this).prop('checked', this.checked);
     });
 </script>
 @endsection

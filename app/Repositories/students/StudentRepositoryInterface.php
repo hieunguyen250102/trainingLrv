@@ -7,4 +7,6 @@ use App\Repositories\RepositoryInterface;
 interface StudentRepositoryInterface extends RepositoryInterface
 {
     public function getStudent();
+
+    public function search($data);
 }

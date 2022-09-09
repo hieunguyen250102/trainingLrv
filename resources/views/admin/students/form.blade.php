@@ -65,7 +65,7 @@
                             {{ Form::label('faculty_id', 'Faculty', ['class' => 'col-form-label col-sm-3 pt-0']) }}
                             {!!Form::select('faculty_id', $faculties,'', ['id' => 'faculty_id', 'class' => 'form-select digits'])!!}
                         </div>
-                        {!! Form::hidden('avatar','Your avatar')!!}
+                        {!! Form::hidden('avatar','https://lionsyouthbrass.band/wp-content/uploads/2022/05/Profile.jpg')!!}
                         {!! Form::hidden('phone','099999999')!!}
                         {!! Form::hidden('birthday', date('Y-m-d'))!!}
                         {!! Form::hidden('address', 'Your address')!!}

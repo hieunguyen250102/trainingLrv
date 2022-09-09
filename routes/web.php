@@ -3,6 +3,7 @@
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
+use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -23,9 +24,20 @@ use Spatie\Permission\Models\Role;
 */
 
 Route::get('/', function () {
+    // $role = Role::create(['name' => 'teacher']);
+    // $role = Role::create(['name' => 'student']);
     // $user = User::find(1);
     // $role = Role::findById(1);
+    // $permission = Permission::all();
+    // $role->givePermissionTo($permission);
+    // $permission = Permission::create(['name' => 'create']);
+    // $permission = Permission::create(['name' => 'view']);
+    // $permission = Permission::create(['name' => 'edit']);
+    // $permission = Permission::create(['name' => 'delete']);
     // $user->assignRole($role);
+    // $user = User::find(2);
+    // $subject = Subject::find(2);
+    // $user->subjects()->save($subject, ['mark' => 1.5]);
     return view('home');
 });
 
@@ -54,6 +66,10 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
- 
+
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+Route::get('/register-subject', [SubjectController::class, 'registerSubject']);
+Route::put('/update/avatar/{id}', [StudentController::class, 'updateAvatar']);
+Route::get('/alert-subject', [StudentController::class, 'alertSubject'])->name('alert-subject');

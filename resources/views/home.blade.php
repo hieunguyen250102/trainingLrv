@@ -61,8 +61,8 @@
                         <div class="profile-img-wrrap bg-size" style="background-image: url('https://thumbs.dreamstime.com/b/female-hands-typing-laptop-student-workspace-blue-pastel-background-supplies-banner-copy-space-182572747.jpg'); background-size: cover; background-position: center center; display: block;"><img class="img-fluid bg-img-cover" src="https://thumbs.dreamstime.com/b/female-hands-typing-laptop-student-workspace-blue-pastel-background-supplies-banner-copy-space-182572747.jpg" alt="" style="display: none;"></div>
                         <div class="userpro-box">
                             <div class="img-wrraper">
-                                <div class="avatar"><img class="img-fluid" alt="" src="{{asset('img/profiles/avatar-11.jpg')}}"></div>
-                                <a class="icon-wrapper" href="#"><i class="icofont-pencil-alt-1"></i></a>
+                                <div class="avatar"><img class="img-fluid" alt="" src="{{asset('img/profiles/'. Auth::user()->avatar)}}"></div>
+                                <a class="icon-wrapper btnModal" data-id="{{Auth::id()}}" data-bs-target="#edit-bookmark" data-bs-toggle="modal"><i class="icofont-pencil-alt-1"></i></a>
                             </div>
                             <div class="user-designation">
                                 <div class="title">
@@ -573,9 +573,31 @@
             </div>
         </div>
     </div>
-
-
-    <!-- Container-fluid Ends-->
+</div>
+<div class="modal fade modal-bookmark" id="edit-bookmark" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Student</h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{ Form::model($user, ['method' => 'POST', 'enctype'  => 'multipart/form-data', 'id' => 'form-update']) }}
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <input name="avatar" id="avatar" onchange="loadFile(event)" class="form-control <?php echo ($errors->first('image') ? 'is-invalid' : ' ') ?>" type="file">
+                        <div class="invalid-feedback">{{$errors->first('image')}}</div>
+                        <div class="form-row">
+                            <img width="100px" src="" alt="" id="output">
+                        </div>
+                    </div>
+                </div>
+                {!! Form::submit('Save', ['class' => 'btn btn-secondary','id' => 'saveUpdateForm'])!!}
+                {!! Form::button('Cancel', ['class' => 'btn btn-primary','data-bs-dismiss' => 'modal'])!!}
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
 </div>
 @endif
 @else
@@ -589,4 +611,66 @@
     </div>
 </div>
 @endif
+@endsection
+@section('js')
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script>
+    $(document).ready(function() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    });
+
+    var loadFile = function(event) {
+        var output = document.getElementById('output');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function() {
+            URL.revokeObjectURL(output.src) // free memory
+        }
+    };
+
+    // $('.btnModal').on('click', function() {
+    //     var id = $(this).attr('data-id');
+    //     $.ajax({
+    //         method: "GET",
+    //         dataType: "json",
+    //         url: 'students/' + id + '/edit',
+    //         success: function(data) {
+    //             var output = document.getElementById('output');
+    //             output.src = 'public/img/profiles'.data.student.avatar;
+    //         }
+    //     })
+    // });
+
+    $('#saveUpdateForm').on('click', function(event) {
+        event.preventDefault();
+        var id = $('.btnModal').attr('data-id');
+        var href = 'update/avatar/' + id;
+        $('form').attr('action', href);
+        var formData = new FormData($('#form-update')[0]).getAll('avatar');
+        $.ajax({
+            url: "/update/avatar/" + id,
+            type: "POST",
+            data: {
+                id: id,
+                processData: false,
+                contentType: false,
+                data: formData,
+                _method: 'PUT'
+            },
+            dataType: 'json',
+            success: function(data) {
+                Swal.fire(
+                    'Successful!',
+                    'Student update successfully!',
+                    'success'
+                )
+                $('#id' + data.student.id).find("td:eq(5)").text(data.faculty_name);
+                $('body').removeAttr('data-bs-padding-right');
+            }
+        })
+    });
+</script>
 @endsection

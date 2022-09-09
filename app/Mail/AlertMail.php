@@ -2,26 +2,25 @@
 
 namespace App\Mail;
 
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class RegisterMail extends Mailable
+class AlertMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    private $user;
+    private $subjects;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct($subjects)
     {
-        $this->user = $user;
-        $this->queue = 'email';
+        $this->subjects = $subjects;
+        $this->queue = 'alertMail';
     }
 
     /**
@@ -31,10 +30,10 @@ class RegisterMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.register-mail')
-            ->subject('INFORMATION ACCOUNT LOGIN')
+        return $this->view('mail.alert-subject')
+            ->subject('THÔNG BÁO ĐĂNG KÍ MÔN HỌC')
             ->with([
-                'user' => $this->user,
+                'subjects' => $this->subjects
             ]);
     }
 }

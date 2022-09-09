@@ -63,7 +63,6 @@
                                                 <td style="padding: 30px;">
                                                     <p>Hi {{$user->name}},</p>
                                                     <p>We send you account to login.</p>
-                                                    <!-- <a href="javascript:void(0)" style="padding: 10px; background-color: #24695c; color: #ffffff; display: inline-block; border-radius: 4px; margin-bottom: 18px;">Call To Action </a> -->
                                                     <p>Email: {{$user->email}}</p>
                                                     <p>Password: 12345678</p>
                                                     <p style="margin-bottom: 0;">Good luck! Hope it works.</p>
