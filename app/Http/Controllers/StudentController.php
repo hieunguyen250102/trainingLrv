@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class StudentController extends Controller
@@ -61,35 +62,46 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make(1),
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:students|min:6|max:32',
+            'email' => 'required|min:6|max:32|unique:students,email|unique:users,email|email',
+            'birthday' => 'required|date',
+            'gender' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
         ]);
-        $student = new Student();
-        $user->assignRole('student');
 
-        $student->user_id =  $user->id;
-        $student->name = $request->name;
-        $student->email = $request->email;
-        $student->avatar = 'avatar.png';
-        $student->phone = $request->phone;
-        $student->birthday = $request->birthday;
-        $student->address = $request->address;
-        $student->gender = $request->gender;
-        $student->status = 0;
-        $student->code = Str::uuid(6)->toString();
-        $student->save();
+        if (!$validator->errors()->all()) {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make(1),
+            ]);
+            $student = new Student();
+            $user->assignRole('student');
 
-        $mailable = new RegisterMail($user);
-        Mail::to($request->email)->queue($mailable);
+            $student->user_id =  $user->id;
+            $student->name = $request->name;
+            $student->email = $request->email;
+            $student->avatar = 'avatar.png';
+            $student->phone = $request->phone;
+            $student->birthday = $request->birthday;
+            $student->address = $request->address;
+            $student->gender = $request->gender;
+            $student->status = 0;
+            $student->code = Str::uuid(6)->toString();
+            $student->save();
 
-        return response()->json([
-            'user' => $user,
-            'student' => $student,
-        ]);
-        // session()->flash('success', 'Create successfully!');
-        // return redirect()->route('students.index');
+            $mailable = new RegisterMail($user);
+            Mail::to($request->email)->queue($mailable);
+
+            return response()->json([
+                'user' => $user,
+                'student' => $student,
+            ]);
+        } else {
+            return response()->json(['errors' => $validator->errors()], 500);
+        }
     }
 
     /**
@@ -226,5 +238,10 @@ class StudentController extends Controller
         $student->update(['faculty_id' => $request->id]);
         session()->flash('success', 'Register successfully!');
         return redirect()->route('faculties.index');
+    }
+
+    public function getSubjectStudent(Request $request)
+    {
+        return $this->studentRepo->getSubjectWithId($request->id);
     }
 }

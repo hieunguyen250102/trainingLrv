@@ -38,4 +38,9 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
 
         return $student->paginate(3);
     }
+
+    public function getSubjectWithId($id)
+    {
+        return $this->model::with('subjects')->find($id);
+    }
 }

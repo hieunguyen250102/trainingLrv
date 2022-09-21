@@ -51,6 +51,7 @@ Route::middleware('role:teacher')->group(function () {
 
 Route::middleware('permission:view')->group(function () {
     Route::resource('subjects', SubjectController::class)->only('index');
+    Route::get('students/subjects/{id}', [StudentController::class, 'getSubjectStudent'])->name('student.subjects');
     Route::resource('faculties', FacultyController::class)->only('index');
 });
 
@@ -60,6 +61,7 @@ Route::get('/register-subject', [SubjectController::class, 'registerSubject']);
 Route::patch('/register-faculty/{id}', [StudentController::class, 'registerFaculty'])->name('register-faculty');
 Route::post('/update/avatar/{id}', [StudentController::class, 'updateAvatar']);
 Route::get('/alert-subject/{id?}', [StudentController::class, 'alertSubject'])->name('alert-subject');
+
 
 Route::get('importExportView/{id}', [SubjectController::class, 'importExportView'])->name('export-view');
 Route::get('export/{id}', [SubjectController::class, 'export'])->name('export');

@@ -61,8 +61,8 @@
                                     <button class="btn btn-warning btn-xs btnModal" data-id="{{$student->id}}" data-bs-target="#edit-bookmark" data-bs-toggle="modal"><i class="fa-solid fa-pen-to-square"></i></button>
                                     <button class="btn btn-danger btn-xs btnDelete" data-id="{{$student->id}}" id="deleteStudent"><i class="fa-solid fa-trash"></i></button>
                                     @if($student->subjects->count() === $subject->count())
-                                    <a href="/add-mark/{{$student->id}}" class="btn btn-primary btn-xs"><i class="fa-solid fa-eye"></i></a>
-                                    <button class="btn btn-secondary btn-xs" data-id="{{$student->id}}" data-bs-target="#edit-bookmark" data-bs-toggle="modal"><i class="fa-solid fa-book"></i></button>
+                                    <a href="/add-mark/{{$student->id}}" class="btn btn-primary btn-xs"><i class="fas fa-hand-pointer"></i></i></a>
+                                    <button class="btn btn-secondary btn-xs btn-modal-subject" data-id="{{$student->id}}" data-bs-target="#subject-bookmark" data-bs-toggle="modal"><i class="fa-solid fa-book"></i></button>
                                     @endif
                                 </td>
                             </tr>
@@ -89,60 +89,32 @@
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         {!!Form::label('', 'Name student')!!}
-                        @if ($errors->first('name'))
-                        {!!Form::text('name', '',['class' => 'form-control is-invalid' ,'id' => 'name_student','placeholder' => 'Enter name student'])!!}
-                        <div class="invalid-feedback">{{$errors->first('name')}}</div>
-                        @else
-                        {!! Form::text('name', '', ['class' => 'form-control','id' => 'name_student','placeholder' => 'Enter name student']) !!}
-                        @endif
+                        {!!Form::text('name', '',['class' => 'form-control' ,'id' => 'name_student','placeholder' => 'Enter name student'])!!}
+                        <div class="invalid-feedback validate-name"></div>
                     </div>
                     <div class="form-group col-md-12">
                         {!!Form::label('', 'Email student')!!}
-                        @if ($errors->first('email'))
-                        {!!Form::email('email', '',['class' => 'form-control is-invalid' ,'id' => 'email_student','placeholder' => 'Enter email student'])!!}
-                        <div class="invalid-feedback">{{$errors->first('email')}}</div>
-                        @else
-                        {!! Form::email('email', '', ['class' => 'form-control','id' => 'email_student','placeholder' => 'Enter name student']) !!}
-                        @endif
+                        {!!Form::email('email', '',['class' => 'form-control' ,'id' => 'email_student','placeholder' => 'Enter email student'])!!}
+                        <div class="invalid-feedback validate-email"></div>
                     </div>
                     <div class="form-group col-md-12">
                         {!!Form::label('', 'Phone number student')!!}
-                        @if ($errors->first('phone'))
-                        {!!Form::text('phone', '',['class' => 'form-control is-invalid' ,'id' => 'phone_student','placeholder' => 'Enter phone student'])!!}
-                        <div class="invalid-feedback">{{$errors->first('phone')}}</div>
-                        @else{!! Form::text('phone', '', ['class' => 'form-control','id' => 'phone_student','placeholder' => 'Enter phone student']) !!}
-                        @endif
+                        {!!Form::text('phone', '',['class' => 'form-control' ,'id' => 'phone_student','placeholder' => 'Enter phone student'])!!}
+                        <div class="invalid-feedback validate-phone"></div>
                     </div>
                     <div class="form-group col-md-12">
                         {!!Form::label('', 'Birthday student')!!}
-                        @if ($errors->first('birthday'))
-                        {!!Form::date('birthday', '',['class' => 'form-control is-invalid' ,'id' => 'birthday_student','placeholder' => 'Enter birthday student'])!!}
-                        <div class="invalid-feedback">{{$errors->first('birthday')}}</div>
-                        @else{!! Form::date('birthday', '', ['class' => 'form-control','id' => 'birthday_student','placeholder' => 'Enter birthday student']) !!}
-                        @endif
+                        {!!Form::date('birthday', '',['class' => 'form-control' ,'id' => 'birthday_student','placeholder' => 'Enter birthday student'])!!}
+                        <div class="invalid-feedback validate-birthday"></div>
                     </div>
                     <div class="form-group col-md-12">
                         {!!Form::label('', 'Address student')!!}
-                        @if ($errors->first('address'))
-                        {!!Form::text('address', '',['class' => 'form-control is-invalid' ,'id' => 'address_student','placeholder' => 'Enter address student'])!!}
-                        <div class="invalid-feedback">{{$errors->first('address')}}</div>
-                        @else{!! Form::text('address', '', ['class' => 'form-control','id' => 'address_student','placeholder' => 'Enter address student']) !!}
-                        @endif
+                        {!!Form::text('address', '',['class' => 'form-control' ,'id' => 'address_student','placeholder' => 'Enter address student'])!!}
+                        <div class="invalid-feedback validate-address"></div>
                     </div>
                     <div class="form-group col-md-12">
                         {{ Form::label('', 'Gender', ['class' => 'col-form-label pt-0']) }}
                         <div class="form-group m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
-                            @if ($errors->first('gender'))
-                            <div class="radio radio-primary">
-                                {{Form::radio('gender', '0', true, ['class' => 'form-check-input is-invalid', 'id' => 'radioinline11'])}}
-                                {{ Form::label('radioinline11', 'Male', ['class' => 'mb-0']) }}
-                            </div>
-                            <div class="radio radio-primary">
-                                {{Form::radio('gender', '1', false, ['class' => 'form-check-input is-invalid', 'id' => 'radioinline22'])}}
-                                {{ Form::label('radioinline22', 'Female', ['class' => 'mb-0']) }}
-                            </div>
-                            <div class="invalid-feedback">{{$errors->first('gender')}}</div>
-                            @else
                             <div class="radio radio-primary">
                                 {{Form::radio('gender', '0', true, ['class' => 'form-check-input', 'id' => 'radioinline11'])}}
                                 {{ Form::label('radioinline11', 'Male', ['class' => 'mb-0']) }}
@@ -151,7 +123,7 @@
                                 {{Form::radio('gender', '1', false, ['class' => 'form-check-input', 'id' => 'radioinline22'])}}
                                 {{ Form::label('radioinline22', 'Female', ['class' => 'mb-0']) }}
                             </div>
-                            @endif
+                            <div class="invalid-feedback validate-gender"></div>
                         </div>
                     </div>
                 </div>
@@ -283,6 +255,7 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Name</th>
+                            <th scope="col">Mark</th>
                         </tr>
                     </thead>
                     <tbody id="table-subject">
@@ -332,7 +305,6 @@
         var address = $('#address_student_edit').val();
         var gender = $('input[name="gender"]:checked').val();
         var faculty_id = $('select[name=faculty_id] option:selected').val();
-        console.log(faculty_id);
         $.ajax({
             url: "/students/" + id,
             type: "PUT",
@@ -363,7 +335,6 @@
         event.preventDefault();
         var name = $('#name_student').val();
         var email = $('#email_student').val();
-        console.log(email);
         var phone = $('#phone_student').val();
         var birthday = $('#birthday_student').val();
         var address = $('#address_student').val();
@@ -392,7 +363,51 @@
                 $('.modal-backdrop').removeClass('show');
                 $('body').removeAttr("style");
                 $('body').removeClass('modal-open');
-                // window.location = "/students/";
+            },
+            error: function(errors) {
+                console.log(errors.responseJSON.errors);
+                if (errors.responseJSON.errors.name) {
+                    $('.validate-name').text(errors.responseJSON.errors.name);
+                    $('#name_student').addClass('is-invalid');
+                } else {
+                    $('.validate-name').text('');
+                    $('#name_student').removeClass('is-invalid');
+                }
+                if (errors.responseJSON.errors.email) {
+                    $('.validate-email').text(errors.responseJSON.errors.email);
+                    $('#email_student').addClass('is-invalid');
+                } else {
+                    $('.validate-email').text('');
+                    $('#email_student').removeClass('is-invalid');
+                }
+                if (errors.responseJSON.errors.phone) {
+                    $('.validate-phone').text(errors.responseJSON.errors.phone);
+                    $('#phone_student').addClass('is-invalid');
+                } else {
+                    $('.validate-phone').text('');
+                    $('#phone_student').removeClass('is-invalid');
+                }
+                if (errors.responseJSON.errors.birthday) {
+                    $('.validate-birthday').text(errors.responseJSON.errors.birthday);
+                    $('#birthday_student').addClass('is-invalid');
+                } else {
+                    $('.validate-birthday').text('');
+                    $('#birthday_student').removeClass('is-invalid');
+                }
+                if (errors.responseJSON.errors.address) {
+                    $('.validate-address').text(errors.responseJSON.errors.address);
+                    $('#address_student').addClass('is-invalid');
+                } else {
+                    $('.validate-address').text('');
+                    $('#address_student').removeClass('is-invalid');
+                }
+                if (errors.responseJSON.errors.gender) {
+                    $('.validate-gender').text(errors.responseJSON.errors.gender);
+                    $('#gender_student').addClass('is-invalid');
+                } else {
+                    $('.validate-gender').text('');
+                    $('#gender_student').removeClass('is-invalid');
+                }
             }
         })
     });
@@ -423,8 +438,27 @@
         }
     });
 
-    $("#checkAll").click(function() {
-        $('input:checkbox').not(this).prop('checked', this.checked);
+    $('.btn-modal-subject').on('click', function(e) {
+        e.preventDefault();
+        var id = $(this).attr('data-id');
+        $.ajax({
+            method: "GET",
+            dataType: "json",
+            url: 'students/subjects/' + id,
+            success: function(data) {
+                var tr = '';
+                data.subjects.forEach(element => {
+                    tr += `
+                        <tr>
+                            <td>${element.id}</td>
+                            <td>${element.name}</td>
+                            <td>${element.pivot.mark}</td>
+                        </tr>
+                    `;
+                });
+                $('#table-subject').html(tr);
+            }
+        })
     });
 </script>
 @endsection
