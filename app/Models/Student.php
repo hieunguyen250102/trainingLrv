@@ -21,6 +21,7 @@ class Student extends Model
         'gender',
         'status',
         'faculty_id',
+        'code',
     ];
 
     public function faculty()
@@ -30,7 +31,7 @@ class Student extends Model
 
     public function subjects(): BelongsToMany
     {
-        return $this->belongsToMany(Subject::class, 'student_subject', 'user_id', 'subject_id')->withPivot('mark');
+        return $this->belongsToMany(Subject::class, 'student_subject', 'student_id', 'subject_id')->withPivot('mark');
     }
 
     public function user()

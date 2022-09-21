@@ -23,9 +23,13 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Name subject</th>
+                                @if(Auth::user()->roles[0]['name'] === 'student')
                                 <th scope="col">Mark subject</th>
-                                <th scope="col">Options</th>
+                                <th scope="col">Status</th>
                                 <th scope="col" class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input id="checkAll" type="checkbox"></th>
+                                @else
+                                <th scope="col">Options</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -85,9 +89,8 @@
                                     @endif
                                     @can('create')
                                     <td>
+                                        <a href="{{route('export-view',$subject->id)}}" class="btn btn-primary"><i class="fa-solid fa-file-export"></i></a>
                                         <a href="{{route('subjects.edit',['subject' => $subject->id])}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
-                                    </td>
-                                    <td>
                                         <a data-id="{{$subject->id}}" id="deleteSubject" class="btn btn-danger btnDelete"><i class="fa-solid fa-trash"></i></a>
                                     </td>
                                     @endcan
@@ -230,7 +233,6 @@
         var ids = Array.prototype.map.call(elements, function(el, i) {
             return el.value;
         });
-        console.log(ids);
         var id = $(this).data("id");
         $.ajax({
             url: "/register-subject/",
@@ -240,7 +242,6 @@
             },
             dataType: 'json',
             success: function(data) {
-                console.log(data);
                 Swal.fire(
                     'Good job!',
                     'You clicked the button!',
@@ -248,7 +249,15 @@
                 )
                 data.listSubjects.forEach(element => {
                     $('#id' + element.id).find("td:eq(2)").replaceWith('<td><span class="font-primary first_name_0">Registered</span></td>');
+                    $("checkAll").attr("disabled", true);
                 });
+            },
+            error: function() {
+                Swal.fire(
+                    'cc!',
+                    'You clicked the button!',
+                    'error'
+                )
             }
         })
     });

@@ -2,7 +2,6 @@
 @section('title-page', 'Create new student')
 @section('content')
 <div class="page-body">
-    <!-- Container-fluid starts-->
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
@@ -61,16 +60,12 @@
                                 </div>
                             </div>
                         </fieldset>
-                        <div class="mb-3">
-                            {{ Form::label('faculty_id', 'Faculty', ['class' => 'col-form-label col-sm-3 pt-0']) }}
-                            {!!Form::select('faculty_id', $faculties,'', ['id' => 'faculty_id', 'class' => 'form-select digits'])!!}
-                        </div>
                         {!! Form::hidden('avatar','https://lionsyouthbrass.band/wp-content/uploads/2022/05/Profile.jpg')!!}
                         {!! Form::hidden('phone','099999999')!!}
                         {!! Form::hidden('birthday', date('Y-m-d'))!!}
                         {!! Form::hidden('address', 'Your address')!!}
                         {!! Form::hidden('status', 0)!!}
-                        {!! Form::hidden('password', '12345678')!!}
+                        {!! Form::hidden('password', '1')!!}
                     </div>
                 </div>
                 <div class="card-footer">
@@ -80,7 +75,6 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>

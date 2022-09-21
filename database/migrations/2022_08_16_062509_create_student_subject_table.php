@@ -15,19 +15,9 @@ return new class extends Migration
     {
         Schema::create('student_subject', function (Blueprint $table) {
             $table->id();
-            // $table->unsignedBigInteger('student_id')->unsigned();
-            // $table->foreign('student_id')
-            //     ->references('id')
-            //     ->on('students')->onDelete('cascade');
-
-            // $table->unsignedBigInteger('subject_id')->unsigned();
-            // $table->foreign('subject_id')
-            //     ->references('id')
-            //     ->on('subjects')->onDelete('cascade');
-
-            // $table->float('mark');
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('student_id')->constrained();
             $table->foreignId('subject_id')->constrained();
+            $table->float('mark')->nullable();
             $table->timestamps();
         });
     }

@@ -15,9 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
-use Laravel\Ui\Presets\React;
-use Spatie\Permission\Contracts\Role;
+use Illuminate\Support\Str;
 
 class StudentController extends Controller
 {
@@ -39,8 +37,7 @@ class StudentController extends Controller
     {
         $student = new Student();
         $subject = new Subject();
-        // $students = $this->studentRepo->search($request->all());
-        $students = User::where('id', '!=', 1)->with('subjects')->get();
+        $students = Student::where('user_id', '!=', 1)->with('subjects')->get();
         $faculties = Faculty::pluck('name', 'id');
         return view('admin.students.index', compact('students', 'faculties', 'student', 'subject'));
     }
@@ -53,8 +50,7 @@ class StudentController extends Controller
     public function create()
     {
         $student = new User();
-        $faculties = Faculty::pluck('name', 'id');
-        return view('admin.students.form', compact('student', 'faculties'));
+        return view('admin.students.form', compact('student'));
     }
 
     /**
@@ -63,32 +59,37 @@ class StudentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StudentRequest $request)
+    public function store(Request $request)
     {
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make(1),
         ]);
         $student = new Student();
         $user->assignRole('student');
+
         $student->user_id =  $user->id;
         $student->name = $request->name;
         $student->email = $request->email;
-        $student->avatar = $request->avatar;
+        $student->avatar = 'avatar.png';
         $student->phone = $request->phone;
         $student->birthday = $request->birthday;
         $student->address = $request->address;
         $student->gender = $request->gender;
-        $student->status = $request->status;
-        $student->faculty_id = $request->faculty_id;
+        $student->status = 0;
+        $student->code = Str::uuid(6)->toString();
         $student->save();
 
         $mailable = new RegisterMail($user);
         Mail::to($request->email)->queue($mailable);
 
-        session()->flash('success', 'Create successfully!');
-        return redirect()->route('students.index');
+        return response()->json([
+            'user' => $user,
+            'student' => $student,
+        ]);
+        // session()->flash('success', 'Create successfully!');
+        // return redirect()->route('students.index');
     }
 
     /**
@@ -140,37 +141,41 @@ class StudentController extends Controller
         $student =  Student::find($id);
         Student::find($id)->delete();
         return response()->json(['student' => $student]);
-        // session()->flash('success', 'Delete successfully!');
-        // return redirect()->route('students.index');
     }
 
     public function updateAvatar(Request $request)
     {
-        // dd($request->all());
-        $user = User::find($request->id);
-        if ($request->data) {
-            $destination_path = 'public/img/profiles';
-            $image = $request->data;
-            $image_name = $image->getClientOriginalName();
-            $path = $request->data->storeAs($destination_path, $image_name);
+        $user = Student::where('user_id', $request->id)->first();
+        if ($request->hasFile('avatar')) {
+            $destination_path = '/img/profiles';
+            $avatar = $request->avatar;
+            $avatar_name = $avatar->getClientOriginalName();
+            $avatar->move(public_path('/img/profiles/'), $avatar_name);
+            $user->avatar = $avatar_name;
+            $user->save();
         }
-        $user->avatar = $image_name;
-        $user->save();
 
-        return response()->json($user);
+        session()->flash('success', 'Create successfully!');
+        return redirect()->route('/');
     }
+
     public function alertSubject(Request $request)
     {
         $subs = Subject::all();
-        // $subjects = $;
         $students = Student::all();
-        foreach ($request->listIds as $id) {
-            $listIds[] = $id;
+        if ($request->id) {
+            $listIds[] = $request->id;
+        } else {
+            foreach ($students as $student) {
+                if ($student->subjects->count() !== $subs->count()) {
+                    $listIds[] = $student->id;
+                }
+            }
         }
         foreach ($listIds as $value) {
             $listSubject = [];
-            $user = User::find($value);
-            $subject_point = $user->subjects;
+            $student = Student::find($value);
+            $subject_point = $student->subjects;
             if ($subject_point->count() == 0) {
                 $listSubject = $subs;
             } else {
@@ -185,8 +190,41 @@ class StudentController extends Controller
                 }
             }
             $mailable = new AlertMail($listSubject);
-            Mail::to($user->email)->queue($mailable);
+            Mail::to($student->email)->queue($mailable);
         }
         return redirect()->route('students.index');
+    }
+
+    public function addMark(Request $request)
+    {
+        $subjects = Student::find($request->id)->subjects;
+        $childrenTag = '';
+        foreach ($subjects as $subject) {
+            $childrenTag .= '<option value="' . $subject->id . '">' . $subject->name . '</option>';
+        }
+        return view('admin.students.add-mark', compact('childrenTag', 'subjects'));
+    }
+
+    public function registerFaculty(Request $request)
+    {
+        $subject = new Subject();
+        $student = Student::where('user_id', Auth::id())->first();
+        if ($student->subjects->count() == $subject->count()) {
+            for ($i = 0; $i < $subject->count(); $i++) {
+                foreach ($student->subjects as $value) {
+                    if ($value->pivot->mark == null) {
+                        session()->flash('error', 'You have not mark enough!');
+                        return redirect()->route('faculties.index');
+                    }
+                }
+            }
+        } else {
+            session()->flash('error', 'You have not learned subjects enough!');
+            return redirect()->route('faculties.index');
+        }
+
+        $student->update(['faculty_id' => $request->id]);
+        session()->flash('success', 'Register successfully!');
+        return redirect()->route('faculties.index');
     }
 }

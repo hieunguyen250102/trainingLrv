@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\MarkStudentExport;
 use App\Http\Requests\SubjectRequest;
+use App\Imports\MarkStudentImport;
+use App\Models\Student;
 use App\Models\Subject;
 use App\Models\User;
 use App\Repositories\Subjects\SubjectRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SubjectController extends Controller
 {
@@ -28,9 +32,16 @@ class SubjectController extends Controller
 
     public function index()
     {
-        $subjects = Subject::with('users')->get();
-        $user = User::find(Auth::id());
-        $results = $user->subjects;
+        $subjects = Subject::with('students')->get();
+        $user = Auth::user();
+        if (Auth::check()) {
+            if ($user->roles[0]['name'] === 'student') {
+                $student = Student::where('user_id', $user->id)->first();
+                $results = $student->subjects;
+            } else {
+                $results = null;
+            }
+        }
         return view('admin.subjects.index', compact('subjects', 'results'));
     }
 
@@ -67,7 +78,7 @@ class SubjectController extends Controller
     public function show($id)
     {
         $subject = Subject::find($id);
-        dd($subject->users()->count());
+        dd($subject->students()->count());
     }
 
     /**
@@ -80,10 +91,6 @@ class SubjectController extends Controller
     {
         $subject = $this->SubjectRepo->find($id);
         return view('admin.subjects.form', compact('subject'));
-        // return response()->json([
-        //     'Subject' => $Subject,
-        //     'id' => $Subject->id
-        // ]);
     }
 
     /**
@@ -119,14 +126,69 @@ class SubjectController extends Controller
 
     public function registerSubject(Request $request)
     {
-        $user = User::find(Auth::id());
-        $listSubjects = array();
-        foreach ($request->data as $id) {
-            $subject = Subject::find($id);
-            $user->subjects()->attach(Auth::id(), ['subject_id' => $id]);
-            $listSubjects[] = $subject;
+        $total = new Subject();
+        $student = Student::where('user_id', Auth::id())->with('subjects')->first();
+        $result = $student->subjects;
+
+        if ($total->count() === $result->count()) {
+            return response()->json(['error' => 'Error msg'], 404);
         }
         
-        return response()->json(['listSubjects' => $listSubjects]);
+        if (isset($result[0])) {
+            foreach ($request->data as $id) {
+                for ($i = 0; $i < $result->count(); $i++) {
+                    if ($id == $result[$i]->id) {
+                        break;
+                    } elseif ($i == $result->count() - 1) {
+                        $subject = Subject::find($id);
+                        $student->subjects()->attach($id, ['student_id' => $student->id],);
+                        $listSubjects[] = $subject;
+                    }
+                }
+            }
+
+            return response()->json(['listSubjects' => $listSubjects]);
+        } else {
+            foreach ($request->data as $id) {
+                $student->subjects()->attach($id, ['student_id' => $student->id],);
+            }
+        }
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function importExportView(Request $request)
+    {
+        $subject = Subject::find($request->id);
+        return view('admin.students.add-mark', compact('subject'));
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function export($id)
+    {
+        return Excel::download(new MarkStudentExport($id), 'mark.xlsx');
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function import(Request $request, $id)
+    {
+        $subject = Subject::with('students')->find($id);
+        $dataExcel = Excel::toCollection(new MarkStudentImport($id), $request->file('file'));
+        foreach ($dataExcel[0] as $data) {
+            foreach ($subject->students as $student) {
+                if ($data[0] == $student['id']) {
+                    $student->pivot->where('student_id', '=', $student['id'])->where('subject_id', $subject->id)->update([
+                        'mark' => $data[3],
+                    ]);
+                }
+            }
+        }
+        session()->flash('success', 'Import successfully!');
+        return redirect()->back();
     }
 }

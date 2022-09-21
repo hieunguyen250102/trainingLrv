@@ -17,15 +17,18 @@
                     <p class="font-light">{{ session()->get('success') }}</p>
                 </div>
                 @endif
+                @if (session()->has('error'))
+                <div class="alert alert-danger w-50 ml-30">
+                    <p class="font-light">{{ session()->get('error') }}</p>
+                </div>
+                @endif
                 <div class="table-responsive">
                     <table class="table table-border-vertical" style="text-align: center;">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Name faculty</th>
-                                @can('create')
-                                <th scope="col" colspan="2">Options</th>
-                                @endcan
+                                <th scope="col">Options</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -36,13 +39,25 @@
                                 @can('create')
                                 <td>
                                     <a href="{{ route('faculties.edit', ['faculty' => $faculty->id]) }}">
-                                        <button class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i>s</button>
+                                        <button class="btn btn-warning btn-xs"><i class="fa-solid fa-pen-to-square"></i>s</button>
                                     </a>
-                                </td>
-                                <td>
-                                    <a href="{{ route('faculties.destroy', ['faculty' => $faculty->id]) }}" class="btn btn-danger btnDelete"><i class="fa-solid fa-trash"></i></a>
+                                    <a href="{{ route('faculties.destroy', ['faculty' => $faculty->id]) }}" class="btn btn-danger btn-xs btnDelete"><i class="fa-solid fa-trash"></i></a>
                                 </td>
                                 @endcan
+                                @role('student')
+                                @if(!($userNow[0]->faculty_id))
+                                <td>
+                                    <form action="/register-faculty/{{$faculty->id}}" method="post">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button class="btn btn-primary">Register</button>
+                                    </form>
+                                </td>
+                                @elseif($userNow[0]->faculty_id == $faculty->id)
+                                <td>Registered</td>
+                                @break
+                                @endif
+                                @endrole
                             </tr>
                             @endforeach
                         </tbody>

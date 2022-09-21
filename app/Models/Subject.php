@@ -13,8 +13,8 @@ class Subject extends Model
         'name'
     ];
 
-    public function users(): BelongsToMany
+    public function students(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'student_subject', 'subject_id', 'user_id')->withPivot('mark');
+        return $this->belongsToMany(Student::class, 'student_subject', 'subject_id', 'student_id')->withPivot('mark');
     }
 }

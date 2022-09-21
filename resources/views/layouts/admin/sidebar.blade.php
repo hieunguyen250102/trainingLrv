@@ -6,7 +6,7 @@
             <span class="badge badge-primary">New</span>
         </div>
         <a href="user-profile">
-            <img class="img-90 rounded-circle" src="{{asset('img/profiles/avatar-11.jpg')}}" alt="">
+            <img class="img-90 rounded-circle" src="{{asset('img/profiles/' . Auth::user()->avatar)}}" alt="">
             <h6 class="mt-3 f-14 f-w-600"></h6>
         </a>
         <p class="mb-0 font-roboto">{{Auth::user()->name}}</p>
@@ -71,7 +71,7 @@
                             @endcan
                         </ul>
                     <li>
-                    @if(Auth::user()->roles[0]['name'] === 'teacher')
+                        @if(Auth::user()->roles[0]['name'] === 'teacher')
                     <li class="dropdown">
                         <a class="nav-link menu-title" href="javascript:void(0)"><i data-feather="users"></i><span>Students</span></a>
                         <ul class="nav-submenu menu-content" style="display: none">

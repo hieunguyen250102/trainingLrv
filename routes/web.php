@@ -19,27 +19,29 @@ use Spatie\Permission\Models\Role;
 |
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
 |
+| contains the "web" middleware group. Now create something great!
 */
 
+Auth::routes();
 Route::get('/', function () {
     // $role = Role::create(['name' => 'teacher']);
     // $role = Role::create(['name' => 'student']);
-    // $user = User::find(1);
-    // $role = Role::findById(1);
-    // $permission = Permission::all();
-    // $role->givePermissionTo($permission);
     // $permission = Permission::create(['name' => 'create']);
     // $permission = Permission::create(['name' => 'view']);
     // $permission = Permission::create(['name' => 'edit']);
     // $permission = Permission::create(['name' => 'delete']);
+    // $user = User::find(1);
+    // $role = Role::findById(2);
+    // $per = Permission::findById(2);
+    // $permission = Permission::all();
+    // $role->givePermissionTo($per);
     // $user->assignRole($role);
     // $user = User::find(2);
     // $subject = Subject::find(2);
     // $user->subjects()->save($subject, ['mark' => 1.5]);
     return view('home');
-});
+})->name('/');
 
 Route::middleware('role:teacher')->group(function () {
     Route::resource('students', StudentController::class);
@@ -52,24 +54,13 @@ Route::middleware('permission:view')->group(function () {
     Route::resource('faculties', FacultyController::class)->only('index');
 });
 
-Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
-
-
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    return redirect('/');
-})->middleware(['auth', 'signed'])->name('verification.verify');
-
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-
-    return back()->with('message', 'Verification link sent!');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Route::get('/register-subject', [SubjectController::class, 'registerSubject']);
-Route::put('/update/avatar/{id}', [StudentController::class, 'updateAvatar']);
-Route::get('/alert-subject', [StudentController::class, 'alertSubject'])->name('alert-subject');
+Route::patch('/register-faculty/{id}', [StudentController::class, 'registerFaculty'])->name('register-faculty');
+Route::post('/update/avatar/{id}', [StudentController::class, 'updateAvatar']);
+Route::get('/alert-subject/{id?}', [StudentController::class, 'alertSubject'])->name('alert-subject');
+
+Route::get('importExportView/{id}', [SubjectController::class, 'importExportView'])->name('export-view');
+Route::get('export/{id}', [SubjectController::class, 'export'])->name('export');
+Route::post('import/{id}', [SubjectController::class, 'import'])->name('import');

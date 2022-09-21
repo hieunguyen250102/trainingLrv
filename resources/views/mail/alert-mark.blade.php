@@ -58,14 +58,7 @@
                                         </tbody>
                                     </table>
                                     <table class="table table-hover" style="width: 650px; margin: 0 auto; background-color: #fff; border-radius: 8px;">
-                                    <td>THERE ARE SUBJECTS YOU HAVE NOT REGISTERED</td>
-                                        <tbody>
-                                            @foreach ($subjects as $subject)
-                                            <tr>
-                                                <td>{{$subject->name}}</td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
+                                    <td>THIS IS YOUR MARK: {{$result}}</td>
                                     </table>
                                     <table style="width: 650px; margin: 0 auto; margin-top: 30px;">
                                         <tbody>
@@ -99,7 +92,6 @@
     <script src="{{asset('assets/js/chart/chartist/chartist-plugin-tooltip.js')}}"></script>
     <script src="{{asset('assets/js/chart/knob/knob.min.js')}}"></script>
     <script src="{{asset('assets/js/chart/knob/knob-chart.js')}}"></script>
-    <!-- <script src="{{asset('assets/js/chart/apex-chart/apex-chart.js')}}"></script> -->
     <script src="{{asset('assets/js/chart/apex-chart/stock-prices.js')}}"></script>
     <script src="{{asset('assets/js/prism/prism.min.js')}}"></script>
     <script src="{{asset('assets/js/clipboard/clipboard.min.js')}}"></script>
@@ -109,7 +101,6 @@
     <script src="{{asset('assets/js/custom-card/custom-card.js')}}"></script>
     <script src="{{asset('assets/js/notify/bootstrap-notify.min.js')}}"></script>
     <script src="{{asset('assets/js/vector-map/jquery-jvectormap-2.0.2.min.js')}}"></script>
-    <script src="{{asset('assets/js/notify/index.js')}}"></script>
     <script src="{{asset('assets/js/script.js')}}"></script>
     <script src="{{asset('assets/js/theme-customizer/customizer.js')}}"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

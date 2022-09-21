@@ -33,7 +33,6 @@ class StudentRequest extends FormRequest
                 'address' => 'required',
                 'gender' => 'required',
                 'status' => 'required',
-                // 'faculty_id' => 'required|exists:faculties,id',
             ];
         }
 

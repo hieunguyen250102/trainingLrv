@@ -48,16 +48,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public function faculty()
-    {
-        return $this->hasOne(Faculty::class);
-    }
-
-    public function subjects(): BelongsToMany
-    {
-        return $this->belongsToMany(Subject::class, 'student_subject', 'user_id', 'subject_id')->withPivot('mark');
-    }
-
     public function student()
     {
         return $this->hasOne(Student::class);
