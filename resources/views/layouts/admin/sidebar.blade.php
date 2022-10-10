@@ -3,14 +3,14 @@
     <div class="sidebar-user text-center">
         <a class="setting-primary" href="javascript:void(0)"><i data-feather="settings"></i></a><img class="img-90 rounded-circle" src="" alt="" />
         <div class="badge-bottom">
-            <span class="badge badge-primary">New</span>
+            <span class="badge badge-primary">@lang('lang.badge')</span>
         </div>
         <a href="user-profile">
-            <img class="img-90 rounded-circle" src="{{asset('img/profiles/' . Auth::user()->avatar)}}" alt="">
+            <img class="img-90 rounded-circle" src="" alt="">
             <h6 class="mt-3 f-14 f-w-600"></h6>
         </a>
         <p class="mb-0 font-roboto">{{Auth::user()->name}}</p>
-        <ul>
+        <!-- <ul>
             <li>
                 <span><span class="counter">19.8</span>k</span>
                 <p>Follow</p>
@@ -23,7 +23,7 @@
                 <span><span class="counter">95.2</span>k</span>
                 <p>Follower</p>
             </li>
-        </ul>
+        </ul> -->
     </div>
     <nav>
         <div class="main-navbar">
@@ -39,47 +39,47 @@
                     </li>
                     <li class="sidebar-main-title">
                         <div>
-                            <h6>General</h6>
+                            <h6>@lang('lang.sidebar.title')</h6>
                         </div>
                     </li>
                     <li>
-                        <a class="nav-link menu-title active" href="/"><i data-feather="home"></i><span>Dashboard</span></a>
+                        <a class="nav-link menu-title active" href="/"><i data-feather="home"></i><span>@lang('lang.sidebar.homepage')</span></a>
                     </li>
                     <li class="dropdown">
-                        <a class="nav-link menu-title" href="javascript:void(0)"><i data-feather="layers"></i><span>Faculties</span></a>
+                        <a class="nav-link menu-title" href="javascript:void(0)"><i data-feather="layers"></i><span>@lang('lang.faculties')</span></a>
                         <ul class="nav-submenu menu-content" style="display: none">
                             <li>
-                                <a href="{{route('faculties.index')}}" class=""><i class="fa fa-list"></i>List Faculties</a>
+                                <a href="{{route('faculties.index')}}" class=""><i class="fa fa-list"></i>@lang('lang.faculties.list')</a>
                             </li>
                             @can('create')
                             <li>
-                                <a href="{{route('faculties.create')}}" class=""><i class="fa fa-plus"></i>Create new Faculty</a>
+                                <a href="{{route('faculties.create')}}" class=""><i class="fa fa-plus"></i>@lang('lang.faculties.create')</a>
                             </li>
                             @endcan
                         </ul>
                     <li>
                     <li class="dropdown">
-                        <a class="nav-link menu-title" href="javascript:void(0)"><i data-feather="book"></i><span>Subjects</span></a>
+                        <a class="nav-link menu-title" href="javascript:void(0)"><i data-feather="book"></i><span>@lang('lang.subjects')</span></a>
                         <ul class="nav-submenu menu-content" style="display: none">
                             <li>
-                                <a href="{{route('subjects.index')}}" class=""><i class="fa fa-list"></i>List Subjects</a>
+                                <a href="{{route('subjects.index')}}" class=""><i class="fa fa-list"></i>@lang('lang.subjects.list')</a>
                             </li>
                             @can('create')
                             <li>
-                                <a href="{{route('subjects.create')}}" class=""><i class="fa fa-plus"></i>Create new subject</a>
+                                <a href="{{route('subjects.create')}}" class=""><i class="fa fa-plus"></i>@lang('lang.subjects.create')</a>
                             </li>
                             @endcan
                         </ul>
                     <li>
                         @if(Auth::user()->roles[0]['name'] === 'teacher')
                     <li class="dropdown">
-                        <a class="nav-link menu-title" href="javascript:void(0)"><i data-feather="users"></i><span>Students</span></a>
+                        <a class="nav-link menu-title" href="javascript:void(0)"><i data-feather="users"></i><span>@lang('lang.students')</span></a>
                         <ul class="nav-submenu menu-content" style="display: none">
                             <li>
-                                <a href="{{route('students.index')}}" class=""><i class="fa fa-list"></i>List Students</a>
+                                <a href="{{route('students.index')}}" class=""><i class="fa fa-list"></i>@lang('lang.students.list')</a>
                             </li>
                             <li>
-                                <a href="{{route('students.create')}}" class=""><i class="fa fa-plus"></i>Create new student</a>
+                                <a href="{{route('students.create')}}" class=""><i class="fa fa-plus"></i>@lang('lang.students.create')</a>
                             </li>
                         </ul>
                     </li>

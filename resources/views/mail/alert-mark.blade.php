@@ -59,6 +59,7 @@
                                     </table>
                                     <table class="table table-hover" style="width: 650px; margin: 0 auto; background-color: #fff; border-radius: 8px;">
                                     <td>THIS IS YOUR MARK: {{$result}}</td>
+                                    <td>THIS IS YOUR MARK: {{$mark}}</td>
                                     </table>
                                     <table style="width: 650px; margin: 0 auto; margin-top: 30px;">
                                         <tbody>

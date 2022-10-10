@@ -12,14 +12,17 @@ class AlertMarkMail extends Mailable
     use Queueable, SerializesModels;
 
     private $result;
+    private $mark;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($result)
+    public function __construct($result, $mark)
     {
         $this->result = $result;
+        $this->mark = $mark;
+        $this->queue = 'alertMarkMail';
     }
 
     /**
@@ -33,6 +36,7 @@ class AlertMarkMail extends Mailable
             ->subject('ALERT YOUR MARK')
             ->with([
                 'result' => $this->result,
+                'mark' => $this->mark,
             ]);
     }
 }

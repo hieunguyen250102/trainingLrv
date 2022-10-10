@@ -42,7 +42,7 @@ class AutoAlertMark extends Command
         }
         foreach ($listStudentLearned as $value) {
             for ($i = 0; $i < $subject->count(); $i++) {
-                if ($value->subjects[$i]->pivot->mark == null) {
+                if ($value->subjects[$i]->pivot->mark === null) {
                     break;
                 } elseif ($i == $subject->count() - 1) {
                     $listStudentFullMark[] = $value;
@@ -57,7 +57,7 @@ class AutoAlertMark extends Command
             } else {
                 $result = 'Thôi học';
             }
-            Mail::to($student->email)->queue(new AlertMarkMail($result));
+            Mail::to($student->email)->queue(new AlertMarkMail($result, $student->subjects->avg('pivot.mark')));
         }
         return 0;
     }

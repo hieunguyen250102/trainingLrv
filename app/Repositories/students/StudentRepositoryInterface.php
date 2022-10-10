@@ -11,4 +11,8 @@ interface StudentRepositoryInterface extends RepositoryInterface
     public function search($data);
 
     public function getSubjectWithId($id);
+
+    public function getByUser($id);
+
+    public function findByFaculty($id);
 }

@@ -1,5 +1,5 @@
 @extends('layouts.admin.main')
-@section('title-page', 'Homepage')
+@section('title-page', __('title.homepage'))
 @section('content')
 @if(Auth::check())
 @if(Auth::user()->roles[0]['name'] === 'student')
@@ -62,7 +62,7 @@
                         <div class="profile-img-wrrap bg-size" style="background-image: url('https://thumbs.dreamstime.com/b/female-hands-typing-laptop-student-workspace-blue-pastel-background-supplies-banner-copy-space-182572747.jpg'); background-size: cover; background-position: center center; display: block;"><img class="img-fluid bg-img-cover" src="https://thumbs.dreamstime.com/b/female-hands-typing-laptop-student-workspace-blue-pastel-background-supplies-banner-copy-space-182572747.jpg" alt="" style="display: none;"></div>
                         <div class="userpro-box">
                             <div class="img-wrraper">
-                                <div class="avatar"><img class="img-fluid" alt="" src="{{asset('img/profiles/'. Auth::user()->avatar)}}"></div>
+                                <div class="avatar"><img class="img-fluid" alt="" src="{{asset('img/profiles/'. Auth::user()->student->avatar)}}"></div>
                                 <a class="icon-wrapper btnModal" data-id="{{Auth::id()}}" data-bs-target="#edit-bookmark" data-bs-toggle="modal"><i class="icofont-pencil-alt-1"></i></a>
                             </div>
                             <div class="user-designation">

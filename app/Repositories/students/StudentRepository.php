@@ -43,4 +43,14 @@ class StudentRepository extends BaseRepository implements StudentRepositoryInter
     {
         return $this->model::with('subjects')->find($id);
     }
+
+    public function getByUser($id)
+    {
+        return $this->model::where('user_id', $id);
+    }
+
+    public function findByFaculty($id)
+    {
+        return $this->model::where('faculty_id', $id)->get();
+    }
 }

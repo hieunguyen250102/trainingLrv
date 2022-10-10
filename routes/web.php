@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Permission;
@@ -61,8 +63,19 @@ Route::get('/register-subject', [SubjectController::class, 'registerSubject']);
 Route::patch('/register-faculty/{id}', [StudentController::class, 'registerFaculty'])->name('register-faculty');
 Route::post('/update/avatar/{id}', [StudentController::class, 'updateAvatar']);
 Route::get('/alert-subject/{id?}', [StudentController::class, 'alertSubject'])->name('alert-subject');
-
+Route::get('/students/{id}/create/mark/', [StudentController::class, 'addMark'])->name('students.create.mark');
+Route::put('/students/{id}/update/mark/', [StudentController::class, 'updateMark'])->name('students.mark.update');
 
 Route::get('importExportView/{id}', [SubjectController::class, 'importExportView'])->name('export-view');
 Route::get('export/{id}', [SubjectController::class, 'export'])->name('export');
 Route::post('import/{id}', [SubjectController::class, 'import'])->name('import');
+
+Route::get('lang', [LanguageController::class, 'changeLanguage'])->name('changeLanguage');
+Route::get('/greeting/{locale}', function ($locale) {
+    if (!in_array($locale, ['en', 'vn'])) {
+        abort(401);
+    }
+    App::setLocale($locale);
+    session()->put('locale', $locale);
+    return redirect()->back();
+});

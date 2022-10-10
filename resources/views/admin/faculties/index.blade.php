@@ -7,9 +7,9 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>List faculties</h5>
+                    <h5>@lang('lang.faculties.list.title')</h5>
                     @can('create')
-                    <a href="{{route('faculties.create')}}"><button class="btn btn-primary mt-3">Create</button></a>
+                    <a href="{{route('faculties.create')}}"><button class="btn btn-primary mt-3">@lang('lang.faculties.list.btn-create')</button></a>
                     @endcan
                 </div>
                 @if (session()->has('success'))
@@ -27,8 +27,8 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Name faculty</th>
-                                <th scope="col">Options</th>
+                                <th scope="col">@lang('lang.faculties.list.table.col.name')</th>
+                                <th scope="col">@lang('lang.faculties.list.table.col.option')</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,7 +39,7 @@
                                 @can('create')
                                 <td>
                                     <a href="{{ route('faculties.edit', ['faculty' => $faculty->id]) }}">
-                                        <button class="btn btn-warning btn-xs"><i class="fa-solid fa-pen-to-square"></i>s</button>
+                                        <button class="btn btn-warning btn-xs"><i class="fa-solid fa-pen-to-square"></i></button>
                                     </a>
                                     <a href="{{ route('faculties.destroy', ['faculty' => $faculty->id]) }}" class="btn btn-danger btn-xs btnDelete"><i class="fa-solid fa-trash"></i></a>
                                 </td>

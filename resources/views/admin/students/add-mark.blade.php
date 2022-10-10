@@ -1,5 +1,5 @@
 @extends('layouts.admin.main')
-@section('title-page', 'Add mark student')
+@section('title-page', 'List mark student')
 @section('content')
 <div class="page-body">
     <div class="container-fluid">
@@ -73,26 +73,4 @@
         </div>
     </div>
 </div>
-@endsection
-@section('js')
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<script>
-    var i = 0;
-    $("#add").click(function() {
-        ++i;
-        $("#dynamicTable").append('<tr><td><select name="subject_id" class="form-select digits" id="select ' + i + '">' + selectOption + '</select></td><td><input type="text" name="mark" placeholder="Enter mark" class="form-control"/></td><button type="button" class="btn btn-danger remove-tr">Remove</button></td></tr>');
-        $('select').on("change", function() {
-            var value = $('#select ' + i).val();
-            console.log(value);
-            if (value !== '') {
-                $('#select ' + (i + 1) + ' option[value="' + value + '"').hide();
-                $('#select ' + (i + 1) + ' option[value!="' + value + '"').show();
-            }
-        });
-    });
-
-    $(document).on('click', '.remove-tr', function() {
-        $(this).parents('tr').remove();
-    });
-</script>
 @endsection

@@ -8,7 +8,9 @@ use App\Models\Student;
 use App\Models\Subject;
 use App\Models\User;
 use App\Repositories\Faculties\FacultyRepositoryInterface;
+use App\Repositories\Students\StudentRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
 class FacultyController extends Controller
@@ -16,9 +18,10 @@ class FacultyController extends Controller
 
     protected $facultyRepo;
 
-    public function __construct(FacultyRepositoryInterface $facultyRepo)
+    public function __construct(FacultyRepositoryInterface $facultyRepo, StudentRepositoryInterface $studentRepo)
     {
         $this->facultyRepo = $facultyRepo;
+        $this->studentRepo = $studentRepo;
     }
 
     /**
@@ -31,7 +34,6 @@ class FacultyController extends Controller
     {
         $subject = new Subject();
         $userNow = Student::where('user_id', Auth::id())->get();
-
         $faculties = $this->facultyRepo->getFaculty();
         return view('admin.faculties.index', compact('faculties', 'userNow'));
     }
@@ -56,7 +58,7 @@ class FacultyController extends Controller
     public function store(FacultyRequest $request)
     {
         $faculty = $this->facultyRepo->create($request->all());
-        session()->flash('success', 'Create successfully!');
+        session()->flash('success', __('lang.faculties.alert-success-create'));
         return redirect()->route('faculties.index');
     }
 
@@ -92,7 +94,7 @@ class FacultyController extends Controller
     public function update(FacultyRequest $request, $id)
     {
         $faculty = $this->facultyRepo->update($id, $request->all());
-        session()->flash('success', 'Update successfully!');
+        session()->flash('success', __('lang.faculties.alert-success-update'));
         return redirect()->route('faculties.index');
     }
 
@@ -104,6 +106,12 @@ class FacultyController extends Controller
      */
     public function destroy($id)
     {
+        $data = $this->studentRepo->findByFaculty($id);
+        foreach ($data as $key => $value) {
+            $this->studentRepo->find($value->id)->update([
+                'faculty_id' => null
+            ]);
+        }
         $this->facultyRepo->delete($id);
         session()->flash('success', 'Delete successfully!');
         return redirect()->route('faculties.index');

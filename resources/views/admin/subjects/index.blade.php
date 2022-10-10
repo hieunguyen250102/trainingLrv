@@ -7,9 +7,9 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>List subjects</h5>
+                    <h5>{{__('lang.subjects.list.title')}}</h5>
                     @can('create')
-                    <a href="{{route('subjects.create')}}"><button class="btn btn-primary mt-3">Create</button></a>
+                    <a href="{{route('subjects.create')}}"><button class="btn btn-primary mt-3">{{__('lang.subjects.list.btn-create')}}</button></a>
                     @endcan
                 </div>
                 @if (session()->has('success'))
@@ -22,13 +22,13 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Name subject</th>
+                                <th scope="col">{{__('lang.subjects.list.table.col.name')}}</th>
                                 @if(Auth::user()->roles[0]['name'] === 'student')
-                                <th scope="col">Mark subject</th>
-                                <th scope="col">Status</th>
+                                <th scope="col">{{__('lang.subjects.list.table.col.mark')}}</th>
+                                <th scope="col">{{__('lang.subjects.list.table.col.status')}}</th>
                                 <th scope="col" class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><input id="checkAll" type="checkbox"></th>
                                 @else
-                                <th scope="col">Options</th>
+                                <th scope="col">{{__('lang.subjects.list.table.col.option')}}</th>
                                 @endif
                             </tr>
                         </thead>
@@ -42,7 +42,9 @@
                                 <td>
                                     Null
                                 </td>
-                                <td><a>Register</a></td>
+                                <td>
+                                    <a>Register</a>
+                                </td>
                                 <td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">
                                     <input type="checkbox" value="{{$subject->id}}">
                                 </td>
@@ -89,9 +91,10 @@
                                     @endif
                                     @can('create')
                                     <td>
-                                        <a href="{{route('export-view',$subject->id)}}" class="btn btn-primary"><i class="fa-solid fa-file-export"></i></a>
-                                        <a href="{{route('subjects.edit',['subject' => $subject->id])}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
-                                        <a data-id="{{$subject->id}}" id="deleteSubject" class="btn btn-danger btnDelete"><i class="fa-solid fa-trash"></i></a>
+                                        <a href="{{route('export-view',$subject->id)}}" class="btn btn-primary btn-xs"><i class="fa-solid fa-file-export"></i></a>
+                                        <a href="{{route('subjects.edit',['subject' => $subject->id])}}" class="btn btn-warning btn-xs"><i class="fa-solid fa-pen-to-square"></i></a>
+                                        <a data-id="{{$subject->id}}" class="btn btn-danger btn-xs deleteSubject
+"><i class="fa-solid fa-trash"></i></a>
                                     </td>
                                     @endcan
                             </tr>
@@ -192,7 +195,7 @@
     }
 
 
-    $("#deleteSubject").click(function() {
+    $(".deleteSubject").click(function() {
         var id = $(this).data("id");
         var token = $(this).data("token");
         if (confirm('Are you sure?')) {
@@ -213,11 +216,11 @@
                     )
                     $('#id' + data.subject.id).remove();
                 },
-                fail: function() {
+                error: function() {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error...',
-                        text: 'Something went wrong!',
+                        text: 'Have student!',
                     })
                 }
             });
@@ -254,8 +257,8 @@
             },
             error: function() {
                 Swal.fire(
-                    'cc!',
-                    'You clicked the button!',
+                    'error!',
+                    'Something was wrong!',
                     'error'
                 )
             }

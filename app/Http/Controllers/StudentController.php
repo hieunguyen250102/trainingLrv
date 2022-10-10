@@ -11,6 +11,7 @@ use App\Models\Subject;
 use App\Models\User;
 use App\Repositories\Students\StudentRepositoryInterface;
 use App\Repositories\Faculties\FacultyRepositoryInterface;
+use App\Repositories\Subjects\SubjectRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -23,10 +24,11 @@ class StudentController extends Controller
     protected $studentRepo;
     protected $facultyRepo;
 
-    public function __construct(StudentRepositoryInterface $studentRepo, FacultyRepositoryInterface $facultyRepo)
+    public function __construct(StudentRepositoryInterface $studentRepo, FacultyRepositoryInterface $facultyRepo, SubjectRepositoryInterface $subjectRepo)
     {
         $this->studentRepo = $studentRepo;
         $this->facultyRepo = $facultyRepo;
+        $this->subjectRepo = $subjectRepo;
     }
 
     /**
@@ -39,6 +41,13 @@ class StudentController extends Controller
         $student = new Student();
         $subject = new Subject();
         $students = Student::where('user_id', '!=', 1)->with('subjects')->get();
+        // foreach($students as $student){
+        //     if($student->subjects[0]->pivot->mark === null)
+        //     {
+        //         echo $student->subjects[0]->pivot;
+        //         dd(2);
+        //     }
+        // }
         $faculties = Faculty::pluck('name', 'id');
         return view('admin.students.index', compact('students', 'faculties', 'student', 'subject'));
     }
@@ -96,7 +105,6 @@ class StudentController extends Controller
             Mail::to($request->email)->queue($mailable);
 
             return response()->json([
-                'user' => $user,
                 'student' => $student,
             ]);
         } else {
@@ -157,7 +165,7 @@ class StudentController extends Controller
 
     public function updateAvatar(Request $request)
     {
-        $user = Student::where('user_id', $request->id)->first();
+        $user = $this->studentRepo->getByUser($request->id)->first();
         if ($request->hasFile('avatar')) {
             $destination_path = '/img/profiles';
             $avatar = $request->avatar;
@@ -173,8 +181,8 @@ class StudentController extends Controller
 
     public function alertSubject(Request $request)
     {
-        $subs = Subject::all();
-        $students = Student::all();
+        $subs = $this->subjectRepo->getAll();
+        $students = $this->studentRepo->getAll();
         if ($request->id) {
             $listIds[] = $request->id;
         } else {
@@ -186,7 +194,7 @@ class StudentController extends Controller
         }
         foreach ($listIds as $value) {
             $listSubject = [];
-            $student = Student::find($value);
+            $student = $this->studentRepo->find($value);
             $subject_point = $student->subjects;
             if ($subject_point->count() == 0) {
                 $listSubject = $subs;
@@ -210,11 +218,7 @@ class StudentController extends Controller
     public function addMark(Request $request)
     {
         $subjects = Student::find($request->id)->subjects;
-        $childrenTag = '';
-        foreach ($subjects as $subject) {
-            $childrenTag .= '<option value="' . $subject->id . '">' . $subject->name . '</option>';
-        }
-        return view('admin.students.add-mark', compact('childrenTag', 'subjects'));
+        return view('admin.students.add-mark', compact('subjects'));
     }
 
     public function registerFaculty(Request $request)
@@ -243,5 +247,20 @@ class StudentController extends Controller
     public function getSubjectStudent(Request $request)
     {
         return $this->studentRepo->getSubjectWithId($request->id);
+    }
+
+    public function updateMark(Request $request)
+    {
+        $subjectStudent = $this->studentRepo->find($request->student_id)->subjects;
+        foreach ($subjectStudent as $key => $value) {
+            foreach ($request->subject_id as $id) {
+                if ($value->id == $id) {
+                    $value->pivot->update([
+                        'mark' => $request->mark[$key],
+                    ]);
+                }
+            }
+        }
+        return redirect()->route('students.index');
     }
 }

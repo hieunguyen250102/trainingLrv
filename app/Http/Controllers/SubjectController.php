@@ -78,7 +78,6 @@ class SubjectController extends Controller
     public function show($id)
     {
         $subject = Subject::find($id);
-        dd($subject->students()->count());
     }
 
     /**
@@ -105,7 +104,6 @@ class SubjectController extends Controller
         $Subject = $this->SubjectRepo->update($id, $request->all());
         session()->flash('success', 'Update successfully!');
         return redirect()->route('subjects.index');
-        // return response()->json($Subject);
     }
 
     /**
@@ -133,7 +131,7 @@ class SubjectController extends Controller
         if ($total->count() === $result->count()) {
             return response()->json(['error' => 'Error msg'], 404);
         }
-        
+
         if (isset($result[0])) {
             foreach ($request->data as $id) {
                 for ($i = 0; $i < $result->count(); $i++) {

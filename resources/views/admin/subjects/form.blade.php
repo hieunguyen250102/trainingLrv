@@ -1,5 +1,9 @@
 @extends('layouts.admin.main')
-@section('title-page', 'Create new category')
+@if($subject->id)
+@section('title-page', __('lang.title.update-subject'))
+@else
+@section('title-page', __('lang.title.create-subject'))
+@endif
 @section('content')
 
 <div class="page-body">
@@ -9,7 +13,11 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header pb-0">
-                        <h5>Create new subject</h5>
+                        @if($subject->id)
+                        <h5>@lang('lang.subjects.form.update.title')</h5>
+                        @else
+                        <h5>@lang('lang.subjects.form.create.title')</h5>
+                        @endif
                     </div>
                     <div class="card-body">
                         @if($subject->id)
@@ -18,39 +26,57 @@
                         {{ Form::model($subject, ['method' => 'POST', 'route' => 'subjects.store', 'class' => 'theme-form']) }}
                         @endif
                         <div class="mb-3">
-                            {{Form::label('exampleInputEmail1', 'Name Subject', ['class' => 'col-form-label pt-0'])}}
+                            {{Form::label('exampleInputEmail1', __('lang.subjects.form.title.input.name'), ['class' => 'col-form-label pt-0'])}}
                             @if ($errors->first('name'))
-                            {!!Form::text('name', $subject->name,['class' => 'form-control is-invalid' , 'id' => 'exampleInputEmail1','placeholder' => 'Enter name subject'])!!}
+                            {!!Form::text('name', $subject->name,['class' => 'form-control is-invalid' , 'id' => 'exampleInputEmail1','placeholder' => __('lang.subjects.form.placeholder.input.name')])!!}
                             <div class="invalid-feedback">{{$errors->first('name')}}</div>
                             @else
-                            {!!Form::text('name', $subject->name, ['class' => 'form-control' , 'id' => 'exampleInputEmail1','placeholder' => 'Enter name subject'])!!}
+                            {!!Form::text('name', $subject->name, ['class' => 'form-control' , 'id' => 'exampleInputEmail1','placeholder' => __('lang.subjects.form.placeholder.input.name')])!!}
                             @endif
                         </div>
                     </div>
                     <div class="card-footer">
-                        {!! Form::submit('Submit', ['class' => 'btn btn-primary'])!!}
+                        {!! Form::submit(__('lang.subjects.form.btn-save'), ['class' => 'btn btn-primary'])!!}
                         {{ Form::close() }}
                         @if($subject->id)
-                        <a href="{{route('subjects.destroy',$subject->id)}}" class="btn btn-danger btnDelete">Delete</a>
+                        <a href="{{route('subjects.destroy',$subject->id)}}" class="btn btn-danger deleteSubject">@lang('lang.subjects.form.btn-delete')</a>
                         @endif
-                        <form action="" method="POST" id="form-delete">
-                            {{ method_field('DELETE') }}
-                            {!! csrf_field() !!}
-                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
-    $('.btnDelete').click(function(e) {
-        e.preventDefault();
-        var href = $(this).attr('href');
-        $('#form-delete').attr('action', href);
+    $(".deleteSubject").click(function() {
+        var id = $(this).data("id");
+        var token = $(this).data("token");
         if (confirm('Are you sure?')) {
-            $('#form-delete').submit();
+            $.ajax({
+                url: "subjects/" + id,
+                type: 'POST',
+                dataType: "JSON",
+                data: {
+                    id: id,
+                    "_method": 'DELETE',
+                    "_token": token,
+                },
+                success: function(data) {
+                    Swal.fire(
+                        'Successful!',
+                        'Subject delete successfully!',
+                        'success'
+                    )
+                    $('#id' + data.subject.id).remove();
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error...',
+                        text: 'Something went wrong!',
+                    })
+                }
+            });
         }
     });
 </script>

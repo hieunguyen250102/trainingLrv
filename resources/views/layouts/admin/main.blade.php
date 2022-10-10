@@ -5,9 +5,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="viho admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities. laravel/framework: ^8.40" />
-    <meta name="keywords" content="admin template, viho admin template, dashboard template, flat admin template, responsive admin template, web app" />
-    <meta name="author" content="pixelstrap" />
     <link rel="icon" href="{{asset('/images/favicon.ico')}}" type="image/x-icon" />
     <link rel="shortcut icon" href="{{asset('/images/favicon.ico')}}" type="image/x-icon" />
     <title>NTH - @yield('title-page')</title>
@@ -56,26 +53,9 @@
 <!-- feather icon js-->
 <script src="{{asset('assets/js/icons/feather-icon/feather.min.js')}}"></script>
 <script src="{{asset('assets/js/icons/feather-icon/feather-icon.js')}}"></script>
-<!-- Sidebar jquery-->
 <script src="{{asset('assets/js/sidebar-menu.js')}}"></script>
 <script src="{{asset('assets/js/config.js')}}"></script>
-<!-- Bootstrap js-->
-<script src="{{asset('assets/js/bootstrap/popper.min.js')}}"></script>
 <script src="{{asset('assets/js/bootstrap/bootstrap.min.js')}}"></script>
-<!-- Plugins JS start-->
-<script src="{{asset('assets/js/chart/chartist/chartist.js')}}"></script>
-<script src="{{asset('assets/js/chart/chartist/chartist-plugin-tooltip.js')}}"></script>
-<script src="{{asset('assets/js/chart/knob/knob.min.js')}}"></script>
-<script src="{{asset('assets/js/chart/knob/knob-chart.js')}}"></script>
-<script src="{{asset('assets/js/prism/prism.min.js')}}"></script>
-<script src="{{asset('assets/js/clipboard/clipboard.min.js')}}"></script>
-<script src="{{asset('assets/js/counter/jquery.waypoints.min.js')}}"></script>
-<script src="{{asset('assets/js/counter/jquery.counterup.min.js')}}"></script>
-<script src="{{asset('assets/js/counter/counter-custom.js')}}"></script>
-<script src="{{asset('assets/js/custom-card/custom-card.js')}}"></script>
-<script src="{{asset('assets/js/vector-map/jquery-jvectormap-2.0.2.min.js')}}"></script>
-<!-- Plugins JS Ends-->
-<!-- Theme js-->
 <script src="{{asset('assets/js/script.js')}}"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

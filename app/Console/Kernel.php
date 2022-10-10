@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('auto:alertmark')->everyTwoMinutes();
+        $schedule->command('auto:alertmark')->everyMinute();
     }
 
     /**
